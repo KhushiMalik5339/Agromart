@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping Cart - AgroMart</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e0e4da",
+                    "primary-fixed-dim": "#88d982",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#90d792",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#002204",
+                    "primary-fixed": "#a3f69c",
+                    "primary": "#0d631b",
+                    "outline-variant": "#bfcaba",
+                    "outline": "#707a6c",
+                    "inverse-primary": "#88d982",
+                    "on-secondary-fixed-variant": "#07521d",
+                    "on-primary-container": "#cbffc2",
+                    "tertiary-container": "#b14b6f",
+                    "on-tertiary-fixed-variant": "#7f2448",
+                    "on-tertiary-fixed": "#3f001c",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#002107",
+                    "background": "#f7fbf0",
+                    "inverse-surface": "#2d322b",
+                    "surface-tint": "#1b6d24",
+                    "surface-container-high": "#e5eadf",
+                    "inverse-on-surface": "#eef2e8",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#f7fbf0",
+                    "surface-dim": "#d7dbd2",
+                    "tertiary": "#923357",
+                    "surface-container-highest": "#e0e4da",
+                    "primary-container": "#2e7d32",
+                    "on-primary-fixed-variant": "#005312",
+                    "secondary-fixed": "#abf4ac",
+                    "surface": "#f7fbf0",
+                    "surface-container-low": "#f1f5eb",
+                    "surface-container": "#ebefe5",
+                    "secondary-container": "#abf4ac",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#181d17",
+                    "tertiary-fixed-dim": "#ffb1c7",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#ffedf0",
+                    "on-surface-variant": "#40493d",
+                    "secondary": "#286b33",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#ffd9e2",
+                    "on-surface": "#181d17",
+                    "on-secondary-container": "#2e7238"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "24px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "xxl": "48px",
+                    "gutter": "16px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Poppins"],
+                    "label-sm": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Poppins"],
+                    "headline-lg-mobile": ["Poppins"],
+                    "display-lg-mobile": ["Poppins"],
+                    "headline-lg": ["Poppins"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            },
+            boxShadow: {
+                'level1': '0 0 0 1px rgba(112, 122, 108, 0.15)',
+                'level2': '0 4px 20px rgba(46, 125, 50, 0.04)',
+                'level3': '0 8px 32px rgba(46, 125, 50, 0.08)'
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md docked full-width top-0 sticky border-b border-outline-variant/30 shadow-sm z-50">
+<div class="flex justify-between items-center w-full px-xxl py-md max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-sm group" href="#">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">eco</span>
+                AgroMart
+            </a>
+<!-- Navigation Links (Web) -->
+<div class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-label-lg text-label-lg hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-md py-sm rounded-full transition-all duration-200" href="#">Shop</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-label-lg text-label-lg hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-md py-sm rounded-full transition-all duration-200" href="#">Farmers</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-label-lg text-label-lg hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-md py-sm rounded-full transition-all duration-200" href="#">Sustainability</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-label-lg text-label-lg hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-md py-sm rounded-full transition-all duration-200" href="#">Wholesale</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-md">
+<!-- Search bar abstract (on right as per json) -->
+<div class="hidden md:flex bg-surface-container-low rounded-full px-md py-sm items-center gap-sm border border-outline-variant/50 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-32 focus:w-48 transition-all placeholder:text-on-surface-variant/50" placeholder="Search fresh..." type="text"/>
+<div class="flex gap-xs">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="mic">mic</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="image">image</span></button>
+</div>
+</div>
+<!-- Secondary Action: Account -->
+<button class="text-on-surface-variant hover:text-primary transition-colors hidden md:block hover:bg-surface-container-low p-sm rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-[24px]" data-icon="person">person</span>
+</button>
+<!-- Primary Action: Cart (Active State conceptually) -->
+<button class="relative bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors p-sm rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-tertiary text-on-tertiary font-label-sm text-[10px] w-5 h-5 flex items-center justify-center rounded-full border-2 border-surface">2</span>
+</button>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-lg md:px-xxl py-xl md:py-xxl grid grid-cols-1 md:grid-cols-12 gap-xl">
+<!-- Header -->
+<div class="col-span-1 md:col-span-12 mb-md">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Your Cart</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">2 items in your cart. <a class="text-primary hover:underline" href="#">Continue shopping</a></p>
+</div>
+<!-- Cart Items List (Left Column) -->
+<div class="col-span-1 md:col-span-8 flex flex-col gap-md">
+<!-- Cart Item 1 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 p-md md:p-lg flex flex-col sm:flex-row gap-lg items-start sm:items-center relative group transition-all duration-300 hover:shadow-level3 border border-transparent hover:border-primary/10">
+<button class="absolute top-md right-md text-on-surface-variant/50 hover:text-error transition-colors p-sm rounded-full hover:bg-error-container/50">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+<!-- Product Image -->
+<div class="w-full sm:w-32 h-32 rounded-[16px] overflow-hidden bg-surface-container-low shrink-0 relative ring-1 ring-black/5 inset-0">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A beautiful macro shot of freshly harvested organic Hass avocados in a rustic woven basket. The setting is bright and natural, bathed in soft morning sunlight creating a fresh, organic modernism aesthetic. The color palette emphasizes vibrant natural greens against a clean, minimal white surface, conveying premium quality and farm-to-table freshness." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCCdPNR4fwyTeFYwBENUs9FIyzTHPvp7XE7KZivQ1OJrdNrO5NsuQGF6GRhIMWT4wJeDK38b4wr0Fxwq4hzE9Wjt7VAiuAwWq8D1kaU8A_HhKoIA_XI_H_Hef4tBLVWDSFYRK_sMa-fV7pV5YRmrP2AXVFBsPDajdMgpooXG1bsAvycTh42ZCJUu85kJDDCp7pJpFqlPBRnA1EqsWLqCY02OqJ6pziY3QNuwyS4NFHmPYbQ9muA5UA')"></div>
+</div>
+<!-- Product Details -->
+<div class="flex-grow flex flex-col gap-xs w-full">
+<div class="flex flex-wrap gap-sm mb-xs">
+<span class="bg-secondary/10 text-secondary font-label-sm text-label-sm px-sm py-xs rounded-full">Organic</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm px-sm py-xs rounded-full">Bestseller</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Hass Avocados (Pack of 4)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Sourced directly from Green Valley Farms.</p>
+<div class="flex flex-wrap items-center justify-between mt-sm gap-md w-full">
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">
+                            ₹320.00
+                        </div>
+<!-- Quantity Picker -->
+<div class="flex items-center bg-surface-container-low rounded-full px-sm py-xs shadow-level1">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+<span class="w-10 text-center font-label-lg text-label-lg text-on-surface">1</span>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Cart Item 2 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 p-md md:p-lg flex flex-col sm:flex-row gap-lg items-start sm:items-center relative group transition-all duration-300 hover:shadow-level3 border border-transparent hover:border-primary/10">
+<button class="absolute top-md right-md text-on-surface-variant/50 hover:text-error transition-colors p-sm rounded-full hover:bg-error-container/50">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+<!-- Product Image -->
+<div class="w-full sm:w-32 h-32 rounded-[16px] overflow-hidden bg-surface-container-low shrink-0 relative ring-1 ring-black/5 inset-0">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A high-resolution product photography shot of ripe, red heirloom tomatoes on a clean, light surface. The lighting is soft and diffused, emphasizing the dew drops on the skin and the rich red colors. The composition is clean and minimalist, aligning with a premium organic grocery brand aesthetic, conveying freshness and natural cultivation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlD8Ue4nGn76UfhJFKxZmPTooM4TbfaDiXv0YDhByfELeXbEUHV0amAezEWqrmCOeE8_WlCI65Wn7mYgSPB6X-l6BZGjVZVlxmTPPk9uBRePqhtLqIaiSOJe6cdD6oG8lCEd5-94jrxTptqKgqznqDSJrilVqDxExLn0zn9MJOrLL7D1ApAtv22uRYDJrAVfAf8FVKvmDFoiO_CVqGvUWkuj_Tp2irsEBjOla3OkGaeo6ib4lkfqM')"></div>
+</div>
+<!-- Product Details -->
+<div class="flex-grow flex flex-col gap-xs w-full">
+<div class="flex flex-wrap gap-sm mb-xs">
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-sm py-xs rounded-full">Fresh Harvest</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Heirloom Tomatoes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">1 kg • Sunrise Organics</p>
+<div class="flex flex-wrap items-center justify-between mt-sm gap-md w-full">
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">
+                            ₹180.00
+                        </div>
+<!-- Quantity Picker -->
+<div class="flex items-center bg-surface-container-low rounded-full px-sm py-xs shadow-level1">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+<span class="w-10 text-center font-label-lg text-label-lg text-on-surface">2</span>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Summary Sidebar (Right Column) -->
+<div class="col-span-1 md:col-span-4 relative">
+<div class="sticky top-[100px] bg-surface-container-lowest rounded-[16px] shadow-level2 p-lg flex flex-col gap-lg border border-outline-variant/20">
+<h2 class="font-headline-md text-headline-md text-on-surface border-b border-outline-variant/30 pb-sm">Order Summary</h2>
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span>Subtotal</span>
+<span>₹680.00</span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span class="flex items-center gap-xs">Delivery Fee <span class="material-symbols-outlined text-[16px] text-outline cursor-help" title="Premium members get free delivery.">info</span></span>
+<span class="text-primary font-medium">₹0.00 <span class="text-on-surface-variant line-through text-sm opacity-60 ml-1">₹40.00</span></span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span>GST (18%)</span>
+<span>₹122.40</span>
+</div>
+</div>
+<!-- Coupon Input -->
+<div class="flex items-center gap-sm bg-surface-container-low rounded-lg p-sm border border-outline-variant/30 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-outline text-[20px] pl-sm" data-icon="sell">sell</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50" placeholder="Promo code" type="text"/>
+<button class="font-label-lg text-label-lg text-primary hover:text-primary-container px-md py-xs rounded-md hover:bg-surface-variant transition-colors whitespace-nowrap">Apply</button>
+</div>
+<div class="border-t border-outline-variant/30 pt-md mt-xs">
+<div class="flex justify-between items-end mb-lg">
+<span class="font-headline-md text-headline-md text-on-surface">Total</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary font-bold">₹802.40</span>
+</div>
+<button class="w-full bg-primary text-on-primary hover:bg-primary-container hover:shadow-level3 transition-all duration-300 py-md rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-sm group">
+                        Proceed to Checkout
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Trust Badges -->
+<div class="flex flex-col gap-sm mt-sm bg-surface-container p-md rounded-xl">
+<div class="flex items-center gap-md text-on-surface-variant font-label-sm text-label-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-level1 text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<span>Safe &amp; Secure Payments</span>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant font-label-sm text-label-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-level1 text-secondary shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="spa" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<span>100% Organic Guarantee</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recommended Add-ons -->
+<div class="col-span-1 md:col-span-12 mt-xxl pt-xl border-t border-outline-variant/30">
+<h3 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-lg">Customers also bought</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md md:gap-lg">
+<!-- Add-on 1 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 overflow-hidden group hover:-translate-y-1 hover:shadow-level3 transition-all duration-300 flex flex-col h-full border border-transparent hover:border-primary/10">
+<div class="w-full h-40 relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="A clean, bright studio shot of a bunch of fresh organic basil leaves tied with natural twine. The background is a soft, off-white surface. The lighting highlights the vibrant green texture of the leaves, fitting the organic modernism aesthetic and conveying culinary freshness." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7UvJUOY4G--W2J7y7LENkbbISUyVqmmd8ADR8KloJE36mDyzp3aAPO2CdykmYAiLoA9r5jGoXpFQDlNy_vI9Ob9FhxYeH35uL92Ha_CHayQz42x0bewnSUJ0-sDkEi1I9CFaWzBXdt5N5UcriilrViXDb11Z1C5vCu-CvFLdBgoU6FWCwvLrwpaZsaHQNG3fghWGj5HNqwb051leHRf5pO0WRGKXJyFmqVPFUr-sPhhxHo2Evx4A')"></div>
+<button class="absolute bottom-sm right-sm bg-surface-container-lowest/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-primary shadow-level1 hover:bg-primary hover:text-on-primary transition-colors z-10">
+<span class="material-symbols-outlined" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<h4 class="font-label-lg text-label-lg text-on-surface mb-xs">Fresh Basil Bunch</h4>
+<span class="font-body-md text-body-md text-primary font-medium mt-auto">₹45.00</span>
+</div>
+</div>
+<!-- Add-on 2 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 overflow-hidden group hover:-translate-y-1 hover:shadow-level3 transition-all duration-300 flex flex-col h-full border border-transparent hover:border-primary/10">
+<div class="w-full h-40 relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="A jar of raw, unpasteurized amber honey catching the light on a minimal wooden plinth. The environment is minimalist and bright, emphasizing the golden translucence of the honey. The overall mood is premium, natural, and wholesome, in line with an upscale organic marketplace." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUQ6qn8-Oz0dxfdoVVje2ObTKeKjiBV-CRrwV3_sjkPNp_5qSeN9zkDBLltdOVIfzonSIEvjsXdbgHliVUlfObdf7e2lH8i5zyDPQJacfQAZI0KL5KiPDj-_fbC7ucZx7smm_Gsld03az9eXCXCpuVkG2h6Jm7JU1P--PfkE-6nw-dK9JGi8hsw7QMgrjGIk0xUDCWac4nIBuUG9Shg_EXizhKn-1zkP02OX0drl15ryXXSadSsmk')"></div>
+<button class="absolute bottom-sm right-sm bg-surface-container-lowest/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-primary shadow-level1 hover:bg-primary hover:text-on-primary transition-colors z-10">
+<span class="material-symbols-outlined" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<h4 class="font-label-lg text-label-lg text-on-surface mb-xs">Raw Forest Honey</h4>
+<span class="font-body-md text-body-md text-primary font-medium mt-auto">₹250.00</span>
+</div>
+</div>
+<!-- Add-on 3 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 overflow-hidden group hover:-translate-y-1 hover:shadow-level3 transition-all duration-300 flex flex-col h-full border border-transparent hover:border-primary/10">
+<div class="w-full h-40 relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="A rustic loaf of sourdough bread dusted with flour resting on a clean linen cloth. The lighting is warm yet minimal, showcasing the crust's texture against a pristine, light background. The image evokes a sense of artisanal craftsmanship and organic living." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATdCsiNGKw-xasuGt1-ju-vLoUY1SZIx0BPS76v812vo7KzPBh6UQ9X2L3PW6DSQA96_ImqNZK4H8FZ5aR3Ve3uLgEY9RR-lRpuaUsdSjxhSM0zBdnEkRSzCC71_R66yg3cYtY_vlzZ4A8yNjxtSiJDaeDzx48gqOf0T9myFfna7Bankxb09Oo3TWdSPDBM2od10rJQBNXGI9u5dfN9rLtqU-tmPq5u323URBo1k32anlHWmx0gjA')"></div>
+<button class="absolute bottom-sm right-sm bg-surface-container-lowest/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-primary shadow-level1 hover:bg-primary hover:text-on-primary transition-colors z-10">
+<span class="material-symbols-outlined" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<h4 class="font-label-lg text-label-lg text-on-surface mb-xs">Artisan Sourdough</h4>
+<span class="font-body-md text-body-md text-primary font-medium mt-auto">₹120.00</span>
+</div>
+</div>
+<!-- Add-on 4 -->
+<div class="bg-surface-container-lowest rounded-[16px] shadow-level2 overflow-hidden group hover:-translate-y-1 hover:shadow-level3 transition-all duration-300 flex flex-col h-full border border-transparent hover:border-primary/10 hidden md:flex">
+<div class="w-full h-40 relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="A handful of fresh organic garlic bulbs on a stark white background. The composition is highly intentional and minimal, focusing on the natural papery texture and pure white/purple hues of the garlic. The lighting is bright and even, typical of high-end organic brand photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQDimbm8evm-Nw53cKDiN0d97-UQhXQ6O3RkFkQHAbFfxZPRuvFz8r5apjspoUDniRUUf2068R4Co-1OzOq2SsZNuw-RsLLXeTdWpQxV0pZIwhJ_KDshZcXdLWP4_EFq9XjFHgZ1B6A-jrU-wv8Kq-xRBUiQdT-dg4EkmxQRJU1e_8SAltTtaIc8hCI23ZYFYQdypKfNzkHVpWGPBjQMMhLEyAqq5WdXGoXKw0Z3VdMOj4VrwxQtE')"></div>
+<button class="absolute bottom-sm right-sm bg-surface-container-lowest/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-primary shadow-level1 hover:bg-primary hover:text-on-primary transition-colors z-10">
+<span class="material-symbols-outlined" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<h4 class="font-label-lg text-label-lg text-on-surface mb-xs">Organic Garlic (250g)</h4>
+<span class="font-body-md text-body-md text-primary font-medium mt-auto">₹60.00</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-highest border-t border-outline-variant full-width bottom-0 mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-xxl py-xxl max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-sm">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+                    AgroMart
+                </div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">
+                    © 2024 AgroMart Marketplace. Cultivating Transparency.
+                </p>
+</div>
+<div class="col-span-1 flex flex-col gap-md">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Customer Support</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Farmer Portal</a>
+</div>
+<div class="col-span-1 flex flex-col gap-md">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Organic Standards</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Shipping Policy</a>
+</div>
+<div class="col-span-1 flex flex-col gap-md">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Privacy</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim font-body-md text-body-md hover:underline transition-all focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none rounded-sm" href="#">Terms</a>
+</div>
+</div>
+</footer>
+</body></html>

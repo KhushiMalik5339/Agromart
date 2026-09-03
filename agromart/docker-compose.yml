@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: agromart_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: agromart
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: agromart_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/agromart
+      - JWT_SECRET=agromart_super_secret_jwt_key_2026_change_in_production
+      - JWT_REFRESH_SECRET=agromart_super_secret_refresh_key_2026
+      - GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+      - RAZORPAY_KEY_ID=rzp_test_agromart123
+      - RAZORPAY_KEY_SECRET=rzp_test_secret_agromart123
+      - RAZORPAY_WEBHOOK_SECRET=rzp_webhook_secret_123
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: agromart_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+      - VITE_RAZORPAY_KEY_ID=rzp_test_agromart123
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
