@@ -1,0 +1,9 @@
+{
+  "name": "agromart-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix agromart/frontend install && npm --prefix agromart/frontend run build",
+    "deploy": "wrangler deploy"
+  }
+}
