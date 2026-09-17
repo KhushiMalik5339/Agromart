@@ -2,6 +2,8 @@ import logging
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from app.core.config import settings
 
+import certifi
+
 logger = logging.getLogger("agromart.db")
 
 class Database:
@@ -12,7 +14,12 @@ db = Database()
 
 async def connect_to_mongo():
     logger.info("Connecting to MongoDB...")
-    db.client = AsyncIOMotorClient(settings.MONGODB_URI)
+    # Use certifi CA certificates if connecting to remote/Atlas with TLS
+    connect_kwargs = {}
+    if "mongodb+srv" in settings.MONGODB_URI or "ssl=true" in settings.MONGODB_URI.lower() or "tls=true" in settings.MONGODB_URI.lower():
+        connect_kwargs["tlsCAFile"] = certifi.where()
+
+    db.client = AsyncIOMotorClient(settings.MONGODB_URI, **connect_kwargs)
     db.db = db.client.get_database(settings.DB_NAME)
     logger.info("Connected to MongoDB successfully!")
 

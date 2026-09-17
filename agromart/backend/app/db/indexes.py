@@ -10,33 +10,35 @@ async def create_indexes():
         return
 
     logger.info("Ensuring MongoDB indexes...")
+    try:
+        # users collection indexes
+        await db.users.create_index([("email", ASCENDING)], unique=True)
+        
+        # categories collection indexes
+        await db.categories.create_index([("slug", ASCENDING)], unique=True)
 
-    # users collection indexes
-    await db.users.create_index([("email", ASCENDING)], unique=True)
-    
-    # categories collection indexes
-    await db.categories.create_index([("slug", ASCENDING)], unique=True)
+        # products collection indexes
+        await db.products.create_index([("slug", ASCENDING)], unique=True)
+        await db.products.create_index([("category_id", ASCENDING)])
+        await db.products.create_index([("farmer_id", ASCENDING)])
+        await db.products.create_index([("title", TEXT), ("description", TEXT)], name="product_text_search")
 
-    # products collection indexes
-    await db.products.create_index([("slug", ASCENDING)], unique=True)
-    await db.products.create_index([("category_id", ASCENDING)])
-    await db.products.create_index([("farmer_id", ASCENDING)])
-    await db.products.create_index([("title", TEXT), ("description", TEXT)], name="product_text_search")
+        # orders collection indexes
+        await db.orders.create_index([("user_id", ASCENDING)])
+        await db.orders.create_index([("order_number", ASCENDING)], unique=True)
 
-    # orders collection indexes
-    await db.orders.create_index([("user_id", ASCENDING)])
-    await db.orders.create_index([("order_number", ASCENDING)], unique=True)
+        # carts collection index
+        await db.carts.create_index([("user_id", ASCENDING)], unique=True)
 
-    # carts collection index
-    await db.carts.create_index([("user_id", ASCENDING)], unique=True)
+        # wishlists collection index
+        await db.wishlists.create_index([("user_id", ASCENDING)], unique=True)
 
-    # wishlists collection index
-    await db.wishlists.create_index([("user_id", ASCENDING)], unique=True)
+        # reviews collection index
+        await db.reviews.create_index([("product_id", ASCENDING)])
 
-    # reviews collection index
-    await db.reviews.create_index([("product_id", ASCENDING)])
+        # notifications collection index
+        await db.notifications.create_index([("user_id", ASCENDING)])
 
-    # notifications collection index
-    await db.notifications.create_index([("user_id", ASCENDING)])
-
-    logger.info("MongoDB indexes created successfully.")
+        logger.info("MongoDB indexes created successfully.")
+    except Exception as e:
+        logger.warning(f"Could not initialize MongoDB indexes on startup: {e}")
