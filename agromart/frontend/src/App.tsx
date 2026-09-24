@@ -10,7 +10,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 
-// Lazy loaded feature pages
+// Lazy loaded customer feature pages
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const CategoryPage = lazy(() => import('./pages/CategoryPage').then(m => ({ default: m.CategoryPage })));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage').then(m => ({ default: m.ProductDetailPage })));
@@ -18,16 +18,23 @@ const CartPage = lazy(() => import('./pages/CartPage').then(m => ({ default: m.C
 const WishlistPage = lazy(() => import('./pages/WishlistPage').then(m => ({ default: m.WishlistPage })));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage').then(m => ({ default: m.OrderSuccessPage })));
-const OrdersPage = lazy(() => import('./pages/OrdersPage').then(m => ({ default: m.OrdersPage })));
-const ProfilePage = lazy(() => import('./pages/ProfilePage').then(m => ({ default: m.ProfilePage })));
+const CustomerDashboardPage = lazy(() => import('./pages/CustomerDashboardPage').then(m => ({ default: m.CustomerDashboardPage })));
 
-// Farmer pages
+// Lazy loaded Farmer pages
 const FarmerDashboardPage = lazy(() => import('./pages/farmer/FarmerDashboardPage').then(m => ({ default: m.FarmerDashboardPage })));
 const FarmerProductsPage = lazy(() => import('./pages/farmer/FarmerProductsPage').then(m => ({ default: m.FarmerProductsPage })));
+const FarmerOrdersPage = lazy(() => import('./pages/farmer/FarmerOrdersPage').then(m => ({ default: m.FarmerOrdersPage })));
+const FarmerSalesPage = lazy(() => import('./pages/farmer/FarmerSalesPage').then(m => ({ default: m.FarmerSalesPage })));
+const FarmerProfilePage = lazy(() => import('./pages/farmer/FarmerProfilePage').then(m => ({ default: m.FarmerProfilePage })));
 
-// Admin pages
+// Lazy loaded Admin pages
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
+const AdminFarmersPage = lazy(() => import('./pages/admin/AdminFarmersPage').then(m => ({ default: m.AdminFarmersPage })));
+const AdminCustomersPage = lazy(() => import('./pages/admin/AdminCustomersPage').then(m => ({ default: m.AdminCustomersPage })));
+const AdminProductsPage = lazy(() => import('./pages/admin/AdminProductsPage').then(m => ({ default: m.AdminProductsPage })));
 const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage').then(m => ({ default: m.AdminOrdersPage })));
+const AdminCategoriesPage = lazy(() => import('./pages/admin/AdminCategoriesPage').then(m => ({ default: m.AdminCategoriesPage })));
+const AdminReportsPage = lazy(() => import('./pages/admin/AdminReportsPage').then(m => ({ default: m.AdminReportsPage })));
 
 const PageLoader: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -56,16 +63,17 @@ const App: React.FC = () => {
           <Route path="/product/:slug" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
 
-          {/* Requires login */}
+          {/* Requires customer or any login */}
           <Route element={<RequireAuth />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-success" element={<OrderSuccessPage />} />
-            <Route path="/account/orders" element={<OrdersPage />} />
-            <Route path="/account/profile" element={<ProfilePage />} />
-            {/* alias /account → /account/profile */}
-            <Route path="/account" element={<Navigate to="/account/profile" replace />} />
+            {/* Unified Customer Dashboard */}
+            <Route path="/account" element={<CustomerDashboardPage />} />
+            <Route path="/account/profile" element={<CustomerDashboardPage />} />
+            <Route path="/account/orders" element={<CustomerDashboardPage />} />
+            <Route path="/account/track" element={<CustomerDashboardPage />} />
           </Route>
         </Route>
 
@@ -76,6 +84,10 @@ const App: React.FC = () => {
             <Route path="/farmer/products" element={<FarmerProductsPage />} />
             <Route path="/farmer/inventory" element={<FarmerProductsPage />} />
             <Route path="/farmer/add-product" element={<FarmerProductsPage />} />
+            <Route path="/farmer/orders" element={<FarmerOrdersPage />} />
+            <Route path="/farmer/sales" element={<FarmerSalesPage />} />
+            <Route path="/farmer/profile" element={<FarmerProfilePage />} />
+            <Route path="/farmer" element={<Navigate to="/farmer/dashboard" replace />} />
           </Route>
         </Route>
 
@@ -83,7 +95,14 @@ const App: React.FC = () => {
         <Route element={<RequireAuth allowedRoles={['admin']} />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/admin/farmers" element={<AdminFarmersPage />} />
+            <Route path="/admin/customers" element={<AdminCustomersPage />} />
+            <Route path="/admin/users" element={<AdminCustomersPage />} />
+            <Route path="/admin/products" element={<AdminProductsPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            <Route path="/admin/categories" element={<AdminCategoriesPage />} />
+            <Route path="/admin/reports" element={<AdminReportsPage />} />
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           </Route>
         </Route>
 

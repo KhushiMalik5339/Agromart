@@ -69,20 +69,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <RatingStars rating={product.rating_avg} count={product.rating_count} size="sm" />
         </div>
 
-        {/* Price & Add CTA */}
-        <div className="mt-auto pt-3 border-t border-outline-variant/30 flex items-center justify-between gap-2">
-          <div>
-            <span className="text-xl font-bold text-primary">₹{product.price}</span>
-            <span className="text-xs text-on-surface-variant ml-1 font-medium">/{product.unit}</span>
+        {/* Price & Action Buttons */}
+        <div className="mt-auto pt-3 border-t border-outline-variant/30 space-y-2.5">
+          <div className="flex items-baseline justify-between">
+            <div>
+              <span className="text-xl font-bold text-primary">₹{product.price}</span>
+              <span className="text-xs text-on-surface-variant ml-1 font-medium">/{product.unit}</span>
+            </div>
+            {product.stock_qty !== undefined && product.stock_qty <= 10 && product.stock_qty > 0 && (
+              <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                Only {product.stock_qty} left
+              </span>
+            )}
+            {product.stock_qty === 0 && (
+              <span className="text-[10px] font-semibold text-error bg-error-container/40 px-2 py-0.5 rounded-full">
+                Out of Stock
+              </span>
+            )}
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            className="bg-amber-500 hover:bg-amber-600 active:scale-95 text-on-surface font-semibold text-xs px-3.5 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5"
-          >
-            <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
-            Add
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <Link
+              to={`/product/${product.slug}`}
+              className="w-full text-center border border-outline-variant/70 hover:border-primary text-on-surface hover:text-primary font-semibold text-xs py-2 rounded-lg transition-all flex items-center justify-center gap-1 bg-surface-container-low/50 hover:bg-surface-container-high"
+            >
+              <span className="material-symbols-outlined text-sm">visibility</span>
+              View Details
+            </Link>
+
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock_qty === 0}
+              className="w-full bg-amber-500 hover:bg-amber-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-on-surface font-semibold text-xs py-2 rounded-lg transition-all shadow-sm flex items-center justify-center gap-1"
+            >
+              <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
     </div>

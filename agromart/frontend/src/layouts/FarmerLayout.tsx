@@ -9,10 +9,10 @@ export const FarmerLayout: React.FC = () => {
 
   const navItems = [
     { label: 'Overview & Revenue', path: '/farmer/dashboard', icon: 'analytics' },
-    { label: 'My Inventory', path: '/farmer/inventory', icon: 'inventory_2' },
-    { label: 'Add New Product', path: '/farmer/add-product', icon: 'add_circle' },
+    { label: 'My Products', path: '/farmer/products', icon: 'inventory_2' },
     { label: 'Customer Orders', path: '/farmer/orders', icon: 'local_shipping' },
-    { label: 'Farm Profile Settings', path: '/farmer/profile', icon: 'settings' },
+    { label: 'Sales Summary', path: '/farmer/sales', icon: 'payments' },
+    { label: 'Farm Profile', path: '/farmer/profile', icon: 'badge' },
   ];
 
   return (

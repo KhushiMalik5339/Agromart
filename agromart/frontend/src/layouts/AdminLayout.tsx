@@ -8,11 +8,13 @@ export const AdminLayout: React.FC = () => {
   const { user } = useAuthStore();
 
   const navItems = [
-    { label: 'Platform Metrics', path: '/admin/dashboard', icon: 'dashboard' },
-    { label: 'All Orders', path: '/admin/orders', icon: 'receipt_long' },
-    { label: 'Users & Farmers', path: '/admin/users', icon: 'group' },
-    { label: 'Product Moderation', path: '/admin/products', icon: 'category' },
-    { label: 'Coupons & Offers', path: '/admin/coupons', icon: 'local_offer' },
+    { label: 'Dashboard Overview', path: '/admin/dashboard', icon: 'dashboard' },
+    { label: 'Farmer Management', path: '/admin/farmers', icon: 'agriculture' },
+    { label: 'Customer Management', path: '/admin/customers', icon: 'group' },
+    { label: 'Product Management', path: '/admin/products', icon: 'inventory_2' },
+    { label: 'Order Processing', path: '/admin/orders', icon: 'receipt_long' },
+    { label: 'Categories', path: '/admin/categories', icon: 'category' },
+    { label: 'Reports & Analytics', path: '/admin/reports', icon: 'bar_chart' },
   ];
 
   return (

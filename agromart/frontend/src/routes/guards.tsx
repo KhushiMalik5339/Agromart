@@ -14,9 +14,17 @@ export const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
     return <Navigate to="/login" replace />;
   }
 
+  // Admin has full universal access across all portals
+  if (user.role === 'admin') {
+    return <Outlet />;
+  }
+
+  // Check role restrictions
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    // Redirect to home if user does not have permission
-    return <Navigate to="/" replace />;
+    if (user.role === 'farmer') {
+      return <Navigate to="/farmer/dashboard" replace />;
+    }
+    return <Navigate to="/home" replace />;
   }
 
   return <Outlet />;

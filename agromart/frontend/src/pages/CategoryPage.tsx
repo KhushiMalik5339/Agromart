@@ -74,7 +74,7 @@ export const CategoryPage: React.FC = () => {
       </div>
 
       {/* Category Pills Navigation */}
-      <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
         <Link
           to="/category/vegetables"
           className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
@@ -93,7 +93,37 @@ export const CategoryPage: React.FC = () => {
               : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
           }`}
         >
-          🍎 Organic Fruits
+          🍎 Fruits
+        </Link>
+        <Link
+          to="/category/grains"
+          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            slug === 'grains' || slug === 'seeds-grains'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
+          }`}
+        >
+          🌾 Grains
+        </Link>
+        <Link
+          to="/category/seeds"
+          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            slug === 'seeds'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
+          }`}
+        >
+          🌱 Seeds
+        </Link>
+        <Link
+          to="/category/dairy"
+          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            slug === 'dairy'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
+          }`}
+        >
+          🥛 Dairy Products
         </Link>
         <Link
           to="/category/spices"
@@ -106,14 +136,14 @@ export const CategoryPage: React.FC = () => {
           🌸 Spices & Saffron
         </Link>
         <Link
-          to="/category/seeds-grains"
+          to="/category/organic-farming"
           className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-            slug === 'seeds-grains'
+            slug === 'organic-farming'
               ? 'bg-primary text-on-primary shadow-sm'
               : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
           }`}
         >
-          🌾 Seeds & Grains
+          🍯 Other Agricultural Products
         </Link>
       </div>
 

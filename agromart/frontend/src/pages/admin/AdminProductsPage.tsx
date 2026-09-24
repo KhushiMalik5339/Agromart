@@ -2,38 +2,29 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/axios';
 import { Product, Category } from '../../types';
-import { useAuthStore } from '../../store/authStore';
-import { FarmerProfile } from '../../services/dataService';
+import { DataService } from '../../services/dataService';
 
-export const FarmerProductsPage: React.FC = () => {
+export const AdminProductsPage: React.FC = () => {
   const qc = useQueryClient();
-  const { user } = useAuthStore();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
+  const [selectedCat, setSelectedCat] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  // Form inputs
+  // Form states
   const [title, setTitle] = useState('');
-  const [categoryId, setCategoryId] = useState('cat-veg');
-  const [price, setPrice] = useState<number>(45);
+  const [category, setCategory] = useState('cat-veg');
+  const [price, setPrice] = useState<number>(50);
   const [unit, setUnit] = useState('kg');
-  const [stock, setStock] = useState<number>(80);
+  const [stock, setStock] = useState<number>(100);
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
   const [isOrganic, setIsOrganic] = useState(true);
 
-  const { data: profile } = useQuery<FarmerProfile>({
-    queryKey: ['farmer-profile'],
-    queryFn: async () => {
-      const res = await api.get('/farmer/profile');
-      return res.data;
-    },
-  });
-
   const { data: products, isLoading } = useQuery<Product[]>({
-    queryKey: ['farmer-products'],
+    queryKey: ['admin-products'],
     queryFn: async () => {
-      const res = await api.get('/farmer/products');
+      const res = await api.get('/products');
       return res.data || [];
     },
   });
@@ -46,59 +37,73 @@ export const FarmerProductsPage: React.FC = () => {
     },
   });
 
-  const saveMutation = useMutation({
+  const saveProductMutation = useMutation({
     mutationFn: async () => {
-      const selectedCat = categories?.find((c) => c.id === categoryId);
-      const payload = {
-        title,
-        category_id: categoryId,
-        category_name: selectedCat?.name || 'Vegetables',
-        price: Number(price),
-        unit,
-        stock_qty: Number(stock),
-        images: imageUrl ? [imageUrl] : ['https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800'],
-        description,
-        is_organic: isOrganic,
-        farmer_id: profile?.id || 'f-1',
-        farmer_name: profile?.name || user?.name || 'Organic Farmer',
-        farm_name: profile?.farm_name || 'My Organic Farm',
-      };
-
+      const catObj = categories?.find((c) => c.id === category);
       if (editingProduct) {
-        const res = await api.put(`/farmer/products/${editingProduct.id}`, payload);
-        return res.data;
+        return DataService.updateProduct(editingProduct.id, {
+          title,
+          category_id: category,
+          category_name: catObj?.name || 'Produce',
+          price: Number(price),
+          unit,
+          stock_qty: Number(stock),
+          images: imageUrl ? [imageUrl] : editingProduct.images,
+          description,
+          is_organic: isOrganic,
+        });
       } else {
-        const res = await api.post('/farmer/products', payload);
-        return res.data;
+        return DataService.addProduct({
+          title,
+          category_id: category,
+          category_name: catObj?.name || 'Produce',
+          price: Number(price),
+          unit,
+          stock_qty: Number(stock),
+          images: [imageUrl || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800'],
+          description,
+          is_organic: isOrganic,
+          farmer_name: 'AgroMart Direct',
+          farm_name: 'AgroMart Verified Farms',
+        });
       }
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['farmer-products'] });
-      qc.invalidateQueries({ queryKey: ['farmer-analytics'] });
+      qc.invalidateQueries({ queryKey: ['admin-products'] });
       qc.invalidateQueries({ queryKey: ['all-products'] });
+      qc.invalidateQueries({ queryKey: ['admin-stats'] });
       closeModal();
     },
   });
 
-  const deleteMutation = useMutation({
+  const deleteProductMutation = useMutation({
     mutationFn: async (id: string) => {
-      const res = await api.delete(`/farmer/products/${id}`);
-      return res.data;
+      return DataService.deleteProduct(id);
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['farmer-products'] });
-      qc.invalidateQueries({ queryKey: ['farmer-analytics'] });
+      qc.invalidateQueries({ queryKey: ['admin-products'] });
+      qc.invalidateQueries({ queryKey: ['admin-stats'] });
+    },
+  });
+
+  const toggleAvailabilityMutation = useMutation({
+    mutationFn: async (product: Product) => {
+      const newStatus = product.status === 'active' ? 'inactive' : 'active';
+      return DataService.updateProduct(product.id, { status: newStatus });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['admin-products'] });
     },
   });
 
   const openAddModal = () => {
     setEditingProduct(null);
     setTitle('');
-    setCategoryId('cat-veg');
+    setCategory('cat-veg');
     setPrice(50);
     setUnit('kg');
     setStock(100);
-    setImageUrl('https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800');
+    setImageUrl('https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800');
     setDescription('');
     setIsOrganic(true);
     setIsModalOpen(true);
@@ -107,7 +112,7 @@ export const FarmerProductsPage: React.FC = () => {
   const openEditModal = (p: Product) => {
     setEditingProduct(p);
     setTitle(p.title);
-    setCategoryId(p.category_id);
+    setCategory(p.category_id);
     setPrice(p.price);
     setUnit(p.unit);
     setStock(p.stock_qty);
@@ -122,137 +127,161 @@ export const FarmerProductsPage: React.FC = () => {
     setEditingProduct(null);
   };
 
-  const filteredProducts = (products || []).filter((p) =>
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = (products || []).filter((p) => {
+    const matchesCat = selectedCat === 'all' || p.category_id === selectedCat;
+    const matchesSearch =
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      (p.farm_name && p.farm_name.toLowerCase().includes(search.toLowerCase()));
+    return matchesCat && matchesSearch;
+  });
 
   return (
     <div className="space-y-6">
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/40 card-elevation-1">
         <div>
-          <h1 className="font-poppins font-bold text-2xl text-on-surface">Farm Produce & Inventory</h1>
+          <h1 className="font-poppins font-bold text-2xl text-on-surface">Product Moderation & Catalog</h1>
           <p className="text-sm text-on-surface-variant mt-1">
-            Publish your organic harvests directly to AgroMart consumers. Adjust real-time stock and prices.
+            Add agricultural products, adjust market pricing, control live stock, and moderate farmer submissions.
           </p>
         </div>
         <button
           onClick={openAddModal}
           className="bg-primary hover:bg-primary-container text-on-primary text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 shrink-0 self-start sm:self-center"
         >
-          <span className="material-symbols-outlined text-base">add_circle</span>
-          Add New Produce
+          <span className="material-symbols-outlined text-base">add</span>
+          Add New Product
         </button>
       </div>
 
-      {/* Search Bar */}
-      <div className="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30">
-        <div className="relative w-full max-w-md">
+      {/* Filter and Search Bar */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30">
+        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+          <button
+            onClick={() => setSelectedCat('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              selectedCat === 'all'
+                ? 'bg-primary text-on-primary shadow-sm'
+                : 'bg-white text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            All Products
+          </button>
+          {categories?.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setSelectedCat(c.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                selectedCat === c.id
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'bg-white text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full md:w-72">
           <input
             type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search your farm crops..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search produce or farm..."
             className="w-full bg-white border border-outline-variant/50 rounded-xl pl-9 pr-4 py-2 text-xs text-on-surface focus:outline-none focus:border-primary"
           />
           <span className="material-symbols-outlined absolute left-2.5 top-2 text-base text-outline">search</span>
         </div>
-        <span className="text-xs font-bold text-outline hidden sm:block">
-          {filteredProducts.length} Items Listed
-        </span>
       </div>
 
-      {/* Product List */}
+      {/* Products Table */}
       <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl card-elevation-1 overflow-hidden">
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-on-surface-variant">Loading your crops...</div>
+          <div className="p-8 text-center text-sm text-on-surface-variant">Loading product catalog...</div>
         ) : filteredProducts.length === 0 ? (
-          <div className="p-16 text-center text-on-surface-variant space-y-3">
-            <span className="material-symbols-outlined text-5xl block opacity-40">eco</span>
-            <h3 className="font-poppins font-bold text-lg text-on-surface">No crops listed yet</h3>
-            <p className="text-xs max-w-sm mx-auto">
-              Start selling your organic produce directly to mindful consumers across the region.
-            </p>
-            <button
-              onClick={openAddModal}
-              className="bg-primary hover:bg-primary-container text-on-primary text-xs font-bold px-4 py-2 rounded-xl transition-all inline-flex items-center gap-1.5 shadow-sm"
-            >
-              <span className="material-symbols-outlined text-sm">add</span>
-              Add First Crop
-            </button>
+          <div className="p-12 text-center text-on-surface-variant">
+            <span className="material-symbols-outlined text-4xl block mb-2 opacity-40">inventory_2</span>
+            <p>No products found in this category.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-container-low text-on-surface-variant text-xs uppercase tracking-wide">
-                  <th className="text-left px-5 py-3 font-semibold">Crop</th>
-                  <th className="text-left px-5 py-3 font-semibold">Category</th>
-                  <th className="text-left px-5 py-3 font-semibold">Price</th>
-                  <th className="text-left px-5 py-3 font-semibold">Stock Available</th>
-                  <th className="text-left px-5 py-3 font-semibold">Certification</th>
+                  <th className="text-left px-5 py-3 font-semibold">Product</th>
+                  <th className="text-left px-5 py-3 font-semibold hidden sm:table-cell">Farm / Seller</th>
+                  <th className="text-left px-5 py-3 font-semibold">Price & Unit</th>
+                  <th className="text-left px-5 py-3 font-semibold">Stock</th>
+                  <th className="text-left px-5 py-3 font-semibold">Status</th>
                   <th className="text-right px-5 py-3 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/20">
-                {filteredProducts.map((p) => (
-                  <tr key={p.id} className="hover:bg-surface-container-low/60 transition-colors">
-                    <td className="px-5 py-4">
+                {filteredProducts.map((prod) => (
+                  <tr key={prod.id} className="hover:bg-surface-container-low/60 transition-colors">
+                    <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <img
-                          src={p.images[0] || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=200'}
-                          alt={p.title}
+                          src={prod.images[0]}
+                          alt={prod.title}
                           className="w-12 h-12 rounded-xl object-cover border border-outline-variant/30"
                         />
                         <div>
-                          <div className="font-bold text-on-surface">{p.title}</div>
-                          <div className="text-[11px] text-on-surface-variant line-clamp-1">{p.description}</div>
+                          <div className="font-bold text-on-surface">{prod.title}</div>
+                          <div className="text-[11px] text-secondary font-semibold flex items-center gap-1">
+                            {prod.is_organic && <span>🌿 100% Organic ·</span>}
+                            <span>{prod.category_name}</span>
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-xs font-medium text-on-surface-variant">
-                      {p.category_name}
+                    <td className="px-5 py-3.5 text-xs text-on-surface-variant hidden sm:table-cell">
+                      <div className="font-semibold text-on-surface">{prod.farm_name}</div>
+                      <div>{prod.farmer_name}</div>
                     </td>
-                    <td className="px-5 py-4">
-                      <span className="font-bold text-primary">₹{p.price}</span>
-                      <span className="text-xs text-outline ml-0.5">/{p.unit}</span>
+                    <td className="px-5 py-3.5">
+                      <span className="font-bold text-primary">₹{prod.price}</span>
+                      <span className="text-xs text-outline ml-0.5">/{prod.unit}</span>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-3.5 text-xs">
                       <span
-                        className={`text-xs font-bold px-2.5 py-1 rounded-full ${
-                          p.stock_qty <= 10
+                        className={`font-bold px-2 py-0.5 rounded-full ${
+                          prod.stock_qty <= 10
                             ? 'bg-amber-100 text-amber-800'
                             : 'bg-green-100 text-green-800'
                         }`}
                       >
-                        {p.stock_qty} {p.unit}
+                        {prod.stock_qty} left
                       </span>
                     </td>
-                    <td className="px-5 py-4">
-                      {p.is_organic ? (
-                        <span className="bg-secondary-container/80 text-on-secondary-container text-[11px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
-                          🌿 100% Organic
-                        </span>
-                      ) : (
-                        <span className="text-outline text-xs">Standard Farm</span>
-                      )}
+                    <td className="px-5 py-3.5">
+                      <button
+                        onClick={() => toggleAvailabilityMutation.mutate(prod)}
+                        className={`text-[11px] font-semibold border px-2.5 py-0.5 rounded-full capitalize transition-all ${
+                          prod.status === 'active'
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                            : 'bg-gray-100 text-gray-700 border-gray-300'
+                        }`}
+                      >
+                        {prod.status || 'active'}
+                      </button>
                     </td>
-                    <td className="px-5 py-4 text-right">
+                    <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
-                          onClick={() => openEditModal(p)}
-                          title="Edit Crop"
+                          onClick={() => openEditModal(prod)}
+                          title="Edit Product"
                           className="p-1.5 hover:bg-surface-container-high rounded-lg text-outline hover:text-primary transition-colors"
                         >
                           <span className="material-symbols-outlined text-lg">edit</span>
                         </button>
                         <button
                           onClick={() => {
-                            if (window.confirm(`Delete ${p.title}?`)) {
-                              deleteMutation.mutate(p.id);
+                            if (window.confirm(`Delete "${prod.title}"?`)) {
+                              deleteProductMutation.mutate(prod.id);
                             }
                           }}
-                          title="Delete Crop"
+                          title="Delete Product"
                           className="p-1.5 hover:bg-rose-50 rounded-lg text-outline hover:text-error transition-colors"
                         >
                           <span className="material-symbols-outlined text-lg">delete</span>
@@ -267,13 +296,13 @@ export const FarmerProductsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Add / Edit Crop Modal */}
+      {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-surface-container-lowest max-w-xl w-full rounded-3xl p-6 sm:p-8 space-y-5 max-h-[90vh] overflow-y-auto card-elevation-2 animate-fadeIn">
             <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30">
               <h3 className="font-poppins font-bold text-lg text-on-surface">
-                {editingProduct ? 'Edit Produce' : 'List New Produce For Sale'}
+                {editingProduct ? 'Edit Agricultural Product' : 'Add New Agricultural Product'}
               </h3>
               <button onClick={closeModal} className="p-1 rounded-full hover:bg-surface-container-high text-outline">
                 <span className="material-symbols-outlined">close</span>
@@ -282,13 +311,12 @@ export const FarmerProductsPage: React.FC = () => {
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-on-surface uppercase mb-1">Produce Name</label>
+                <label className="block font-bold text-on-surface uppercase mb-1">Product Title</label>
                 <input
                   type="text"
-                  required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Organic Red Tomatoes"
+                  placeholder="e.g. Farm Fresh Organic Tomatoes"
                   className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:border-primary"
                 />
               </div>
@@ -297,8 +325,8 @@ export const FarmerProductsPage: React.FC = () => {
                 <div>
                   <label className="block font-bold text-on-surface uppercase mb-1">Category</label>
                   <select
-                    value={categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                     className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs text-on-surface font-semibold focus:outline-none focus:border-primary"
                   >
                     {categories?.map((c) => (
@@ -309,10 +337,9 @@ export const FarmerProductsPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-bold text-on-surface uppercase mb-1">Selling Unit</label>
+                  <label className="block font-bold text-on-surface uppercase mb-1">Unit</label>
                   <input
                     type="text"
-                    required
                     value={unit}
                     onChange={(e) => setUnit(e.target.value)}
                     placeholder="kg, litre, packet, 500g"
@@ -323,22 +350,18 @@ export const FarmerProductsPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-on-surface uppercase mb-1">Price per Unit (₹)</label>
+                  <label className="block font-bold text-on-surface uppercase mb-1">Price (₹)</label>
                   <input
                     type="number"
-                    required
-                    min={1}
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
                     className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-on-surface uppercase mb-1">Stock Available</label>
+                  <label className="block font-bold text-on-surface uppercase mb-1">Stock Quantity</label>
                   <input
                     type="number"
-                    required
-                    min={0}
                     value={stock}
                     onChange={(e) => setStock(Number(e.target.value))}
                     className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary"
@@ -347,7 +370,7 @@ export const FarmerProductsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-on-surface uppercase mb-1">Photo URL</label>
+                <label className="block font-bold text-on-surface uppercase mb-1">Product Image URL</label>
                 <input
                   type="text"
                   value={imageUrl}
@@ -357,19 +380,19 @@ export const FarmerProductsPage: React.FC = () => {
                 />
                 {imageUrl && (
                   <div className="mt-2 flex items-center gap-3">
-                    <img src={imageUrl} alt="Preview" className="w-14 h-14 rounded-xl object-cover border" />
-                    <span className="text-[11px] text-outline">Produce Photo Preview</span>
+                    <img src={imageUrl} alt="Preview" className="w-16 h-16 rounded-xl object-cover border" />
+                    <span className="text-[11px] text-outline">Image Preview</span>
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="block font-bold text-on-surface uppercase mb-1">Produce Description</label>
+                <label className="block font-bold text-on-surface uppercase mb-1">Description</label>
                 <textarea
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Grown without synthetic pesticides, watered from clean borewell..."
+                  placeholder="Fresh farm harvest, natural soil cultivation..."
                   className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2 text-xs text-on-surface focus:outline-none focus:border-primary"
                 />
               </div>
@@ -377,13 +400,13 @@ export const FarmerProductsPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  id="farmer-is-organic"
+                  id="modal-organic"
                   checked={isOrganic}
                   onChange={(e) => setIsOrganic(e.target.checked)}
                   className="w-4 h-4 text-primary rounded"
                 />
-                <label htmlFor="farmer-is-organic" className="text-xs font-semibold text-on-surface cursor-pointer">
-                  Mark as 100% Certified Organic Harvest
+                <label htmlFor="modal-organic" className="text-xs font-semibold text-on-surface cursor-pointer">
+                  Certified Organic Produce
                 </label>
               </div>
             </div>
@@ -398,11 +421,11 @@ export const FarmerProductsPage: React.FC = () => {
               </button>
               <button
                 type="button"
-                disabled={!title || price <= 0 || saveMutation.isPending}
-                onClick={() => saveMutation.mutate()}
+                disabled={!title || price <= 0 || saveProductMutation.isPending}
+                onClick={() => saveProductMutation.mutate()}
                 className="bg-primary hover:bg-primary-container text-on-primary text-xs font-bold px-6 py-2.5 rounded-xl shadow-md transition-all"
               >
-                {editingProduct ? 'Update Produce' : 'Publish Crop'}
+                {editingProduct ? 'Save Changes' : 'Create Product'}
               </button>
             </div>
           </div>

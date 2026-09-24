@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright & payment methods */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-outline-variant">
-          <p>© 2026 AgroMart Organic Modernist Marketplace. All rights reserved.</p>
+          <p>© 2026 AgroMart Marketplace. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span>Powered by Razorpay (UPI, Cards, COD)</span>
             <span>·</span>

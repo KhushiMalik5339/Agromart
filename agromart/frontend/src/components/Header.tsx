@@ -25,20 +25,17 @@ export const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           
           {/* Logo & Brand */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
               <span className="material-symbols-outlined text-2xl">eco</span>
             </div>
-            <div>
+            <div className="flex items-center">
               <span className="font-poppins font-bold text-2xl tracking-tight text-primary">AgroMart</span>
-              <span className="hidden sm:inline-block text-[10px] uppercase font-semibold text-secondary tracking-widest block -mt-1">
-                Organic Modernist
-              </span>
             </div>
           </Link>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-8 relative">
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-6 relative">
             <input
               type="text"
               value={searchQuery}
@@ -54,11 +51,13 @@ export const Header: React.FC = () => {
           {/* Nav Actions */}
           <div className="flex items-center gap-3 sm:gap-5">
             {/* Category Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-on-surface-variant">
+            <nav className="hidden xl:flex items-center gap-5 text-sm font-semibold text-on-surface-variant">
               <Link to="/category/vegetables" className="hover:text-primary transition-colors">Vegetables</Link>
               <Link to="/category/fruits" className="hover:text-primary transition-colors">Fruits</Link>
-              <Link to="/category/spices" className="hover:text-primary transition-colors">Spices & Saffron</Link>
-              <Link to="/about" className="hover:text-primary transition-colors">Our Story</Link>
+              <Link to="/category/grains" className="hover:text-primary transition-colors">Grains</Link>
+              <Link to="/category/seeds" className="hover:text-primary transition-colors">Seeds</Link>
+              <Link to="/category/dairy" className="hover:text-primary transition-colors">Dairy</Link>
+              <Link to="/category/spices" className="hover:text-primary transition-colors">Spices</Link>
             </nav>
 
             {/* Notifications Icon */}

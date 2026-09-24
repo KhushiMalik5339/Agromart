@@ -116,17 +116,19 @@ export const LandingPage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { title: 'Fresh Vegetables', slug: 'vegetables', icon: 'eco', count: '45+ items', img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Organic Fruits', slug: 'fruits', icon: 'nutrition', count: '30+ items', img: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Spices & Saffron', slug: 'spices', icon: 'local_florist', count: '18+ items', img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Seeds & Grains', slug: 'seeds-grains', icon: 'grain', count: '25+ items', img: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Vegetables', slug: 'vegetables', icon: 'eco', count: '45+ items', img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Fruits', slug: 'fruits', icon: 'nutrition', count: '30+ items', img: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Grains & Seeds', slug: 'grains', icon: 'grain', count: '25+ items', img: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Dairy Products', slug: 'dairy', icon: 'egg', count: '15+ items', img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Spices & Saffron', slug: 'spices', icon: 'local_florist', count: '18+ items', img: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Other Products', slug: 'organic-farming', icon: 'agriculture', count: '20+ items', img: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=400' },
           ].map((cat) => (
             <Link
               key={cat.slug}
               to={`/category/${cat.slug}`}
-              className="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md border border-outline-variant/30 flex flex-col justify-end p-5 text-white"
+              className="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md border border-outline-variant/30 flex flex-col justify-end p-4 text-white"
             >
               <img
                 src={cat.img}
@@ -135,10 +137,10 @@ export const LandingPage: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-inverse-surface/40 to-transparent"></div>
 
-              <div className="relative z-10 space-y-1">
-                <span className="material-symbols-outlined text-2xl text-secondary-fixed">{cat.icon}</span>
-                <h3 className="font-poppins font-bold text-lg leading-snug">{cat.title}</h3>
-                <p className="text-xs text-secondary-fixed font-medium">{cat.count}</p>
+              <div className="relative z-10 space-y-0.5">
+                <span className="material-symbols-outlined text-xl text-secondary-fixed">{cat.icon}</span>
+                <h3 className="font-poppins font-bold text-sm leading-snug">{cat.title}</h3>
+                <p className="text-[11px] text-secondary-fixed font-medium">{cat.count}</p>
               </div>
             </Link>
           ))}
@@ -169,13 +171,13 @@ export const LandingPage: React.FC = () => {
         )}
       </section>
 
-      {/* Organic Modernism Story & Values */}
+      {/* Organic Agriculture Story & Values */}
       <section className="bg-surface-container-low border-y border-outline-variant/30 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-secondary uppercase tracking-widest">Why AgroMart</span>
             <h2 className="font-poppins font-bold text-3xl text-on-surface mt-1">
-              Organic Modernism — Direct From Soil To Home
+              Pure Agriculture — Direct From Soil To Home
             </h2>
           </div>
 
