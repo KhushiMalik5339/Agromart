@@ -17,6 +17,9 @@ async def get_db():
         )
     return db
 
+async def get_db_optional():
+    return get_database()
+
 async def get_current_user(token: str = Depends(oauth2_scheme), db=Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

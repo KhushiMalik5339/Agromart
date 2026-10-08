@@ -110,7 +110,7 @@ export const LandingPage: React.FC = () => {
             <h2 className="font-poppins font-bold text-2xl sm:text-3xl text-on-surface">Explore Categories</h2>
             <p className="text-on-surface-variant text-sm mt-1">Handpicked organic harvests straight from nature.</p>
           </div>
-          <Link to="/category/vegetables" className="text-primary font-semibold text-sm hover:underline flex items-center gap-1">
+          <Link to="/category" className="text-primary font-semibold text-sm hover:underline flex items-center gap-1">
             View All Categories
             <span className="material-symbols-outlined text-sm">chevron_right</span>
           </Link>
@@ -120,10 +120,10 @@ export const LandingPage: React.FC = () => {
           {[
             { title: 'Vegetables', slug: 'vegetables', icon: 'eco', count: '45+ items', img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=400' },
             { title: 'Fruits', slug: 'fruits', icon: 'nutrition', count: '30+ items', img: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Grains & Seeds', slug: 'grains', icon: 'grain', count: '25+ items', img: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Dairy Products', slug: 'dairy', icon: 'egg', count: '15+ items', img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Spices & Saffron', slug: 'spices', icon: 'local_florist', count: '18+ items', img: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=400' },
-            { title: 'Other Products', slug: 'organic-farming', icon: 'agriculture', count: '20+ items', img: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Grains & Cereals', slug: 'grains', icon: 'grain', count: '25+ items', img: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Pulses & Dal', slug: 'pulses', icon: 'lunch_dining', count: '20+ items', img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Dairy & Ghee', slug: 'dairy', icon: 'egg', count: '15+ items', img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=400' },
+            { title: 'Spices & Condiments', slug: 'spices', icon: 'local_florist', count: '18+ items', img: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=400' },
           ].map((cat) => (
             <Link
               key={cat.slug}

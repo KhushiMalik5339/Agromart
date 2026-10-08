@@ -96,7 +96,7 @@ export const HomePage: React.FC = () => {
             Harvested yesterday in Pampore fields. Certified 100% pure threads with full farm traceability.
           </p>
           <Link
-            to="/product/pure-kashmiri-organic-saffron"
+            to="/product/pure-kashmiri-mongra-saffron-grade-a1-kesar"
             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-on-surface font-bold px-6 py-3 rounded-xl transition-all shadow-md text-sm mt-2"
           >
             Buy Fresh Saffron (Kesar)

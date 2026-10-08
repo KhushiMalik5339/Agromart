@@ -51,14 +51,15 @@ const App: React.FC = () => {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* Public landing */}
-        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Public + authenticated shared layout */}
         <Route element={<PublicLayout />}>
           {/* Open to all */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/search" element={<CategoryPage />} />
+          <Route path="/category" element={<CategoryPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/product/:slug" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />

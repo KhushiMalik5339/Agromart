@@ -31,16 +31,23 @@ export interface CustomerProfile {
   total_spent: number;
 }
 
-const STORAGE_KEY = 'agromart_db_v2';
+const STORAGE_KEY = 'agromart_db_v4';
 
 const INITIAL_CATEGORIES: Category[] = [
-  { id: 'cat-veg', name: 'Vegetables', slug: 'vegetables', icon: 'eco' },
   { id: 'cat-fruits', name: 'Fruits', slug: 'fruits', icon: 'nutrition' },
-  { id: 'cat-grains', name: 'Grains', slug: 'grains', icon: 'grain' },
+  { id: 'cat-veg', name: 'Vegetables', slug: 'vegetables', icon: 'eco' },
+  { id: 'cat-grains', name: 'Grains & Cereals', slug: 'grains', icon: 'grain' },
+  { id: 'cat-pulses', name: 'Pulses & Legumes', slug: 'pulses', icon: 'lunch_dining' },
+  { id: 'cat-dairy', name: 'Dairy & Milk Products', slug: 'dairy', icon: 'egg' },
+  { id: 'cat-spices', name: 'Spices & Condiments', slug: 'spices', icon: 'local_florist' },
+  { id: 'cat-oils', name: 'Oilseeds & Edible Oils', slug: 'oilseeds-oils', icon: 'opacity' },
+  { id: 'cat-dry-fruits', name: 'Dry Fruits & Nuts', slug: 'dry-fruits', icon: 'cookie' },
   { id: 'cat-seeds', name: 'Seeds', slug: 'seeds', icon: 'spa' },
-  { id: 'cat-dairy', name: 'Dairy Products', slug: 'dairy', icon: 'egg' },
-  { id: 'cat-spices', name: 'Spices', slug: 'spices', icon: 'local_florist' },
-  { id: 'cat-other', name: 'Other Agricultural Products', slug: 'organic-farming', icon: 'agriculture' },
+  { id: 'cat-fertilizers', name: 'Fertilizers & Manure', slug: 'fertilizers', icon: 'science' },
+  { id: 'cat-equipment', name: 'Agricultural Tools & Equipment', slug: 'equipment', icon: 'precision_manufacturing' },
+  { id: 'cat-plants', name: 'Flowers & Plants', slug: 'plants', icon: 'yard' },
+  { id: 'cat-organic', name: 'Organic Products', slug: 'organic', icon: 'verified' },
+  { id: 'cat-other', name: 'Other Agricultural Products', slug: 'other-agriculture', icon: 'agriculture' },
 ];
 
 const INITIAL_FARMERS: FarmerProfile[] = [
@@ -54,7 +61,7 @@ const INITIAL_FARMERS: FarmerProfile[] = [
     village: 'Panchavati',
     district: 'Nashik',
     state: 'Maharashtra',
-    category: 'Vegetables & Seeds',
+    category: 'Vegetables & Fruits',
     farming_type: '100% Certified Organic (NPOP)',
     verification_details: 'NPOP-ORG-2023-MH-0842',
     status: 'approved',
@@ -73,7 +80,7 @@ const INITIAL_FARMERS: FarmerProfile[] = [
     village: 'Pampore',
     district: 'Pulwama',
     state: 'Jammu & Kashmir',
-    category: 'Spices & Fruits',
+    category: 'Spices & Dry Fruits',
     farming_type: 'Natural Traditional Mountain Farming',
     verification_details: 'GI-KASHMIR-SAFFRON-89',
     status: 'approved',
@@ -92,7 +99,7 @@ const INITIAL_FARMERS: FarmerProfile[] = [
     village: 'Khanna',
     district: 'Ludhiana',
     state: 'Punjab',
-    category: 'Grains & Oils',
+    category: 'Grains & Pulses',
     farming_type: 'Zero-Budget Natural Farming (ZBNF)',
     verification_details: 'PB-AGRI-ORG-4412',
     status: 'approved',
@@ -123,21 +130,40 @@ const INITIAL_FARMERS: FarmerProfile[] = [
   {
     id: 'f-5',
     user_id: 'u-farmer-5',
-    name: 'Vikas Yadav',
-    email: 'newfarmer@agromart.com',
-    phone: '+91 99881 77234',
-    farm_name: 'Yadav Organic Farm',
-    village: 'Sohna',
-    district: 'Gurugram',
+    name: 'Suresh Verma',
+    email: 'verma.kisan@agromart.com',
+    phone: '+91 98120 77334',
+    farm_name: 'Panipat Kisan Bio-Farms',
+    village: 'Samalkha',
+    district: 'Panipat',
     state: 'Haryana',
-    category: 'Vegetables',
-    farming_type: 'Chemical-Free Hydroponic & Natural',
-    verification_details: 'HR-AGR-VERIF-PENDING-71',
-    status: 'pending_approval',
-    rating: 0,
-    total_sales: 0,
-    orders_count: 0,
-    created_at: '2026-03-20T10:10:00Z',
+    category: 'Vegetables & Seeds',
+    farming_type: 'Natural Vedic Jaivik Krishi',
+    verification_details: 'HR-PANIPAT-KISAN-902',
+    status: 'approved',
+    rating: 4.9,
+    total_sales: 172000,
+    orders_count: 79,
+    created_at: '2025-12-15T09:00:00Z',
+  },
+  {
+    id: 'f-6',
+    user_id: 'u-farmer-6',
+    name: 'Baldev Singh Dhillon',
+    email: 'karnal.paddy@agromart.com',
+    phone: '+91 94160 88219',
+    farm_name: 'Karnal Basmati Heritage Farms',
+    village: 'Taraori',
+    district: 'Karnal',
+    state: 'Haryana',
+    category: 'Grains & Basmati Rice',
+    farming_type: 'Heritage Organic Crop Rotation',
+    verification_details: 'HR-KARNAL-BASMATI-411',
+    status: 'approved',
+    rating: 4.92,
+    total_sales: 234000,
+    orders_count: 91,
+    created_at: '2025-11-20T10:30:00Z',
   },
 ];
 
@@ -160,13 +186,13 @@ const INITIAL_CUSTOMERS: CustomerProfile[] = [
     status: 'active',
     created_at: '2026-02-14T15:20:00Z',
     total_orders: 3,
-    total_spent: 2890,
+    total_spent: 2800,
   },
   {
     id: 'c-3',
-    name: 'Ananya Sen',
-    email: 'ananya.sen@outlook.com',
-    phone: '+91 97123 45678',
+    name: 'Ananya Deshmukh',
+    email: 'ananya.d@yahoo.com',
+    phone: '+91 99201 44556',
     status: 'active',
     created_at: '2026-03-01T08:45:00Z',
     total_orders: 2,
@@ -175,648 +201,3075 @@ const INITIAL_CUSTOMERS: CustomerProfile[] = [
 ];
 
 const INITIAL_PRODUCTS: Product[] = [
-  // --- VEGETABLES ---
   {
-    id: 'p-veg-1',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Farm Fresh Organic Tomatoes',
-    slug: 'farm-fresh-organic-tomatoes',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Vine-ripened, naturally sweet organic tomatoes harvested at peak flavor. Free from synthetic chemicals, pesticides, and artificial wax coatings.',
-    benefits: ['Rich in Lycopene antioxidant', 'High Vitamin C & Potassium', 'Vine-ripened natural aroma'],
-    nutrition: { calories: '18 kcal', protein: '0.9g', carbs: '3.9g', fats: '0.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1546470427-e26264be0b11?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-1",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Devgad, Maharashtra",
+    "title": "Fresh Ratnagiri Alphonso Mango (Hapus)",
+    "slug": "fresh-ratnagiri-alphonso-mango-hapus",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "Naturally tree-ripened Konkan Alphonso mangoes with rich aroma, golden buttery pulp, and divine sweetness. 100% carbide-free.",
+    "benefits": [
+      "Naturally Tree-Ripened",
+      "Geographical Indication (GI) Tagged",
+      "Carbide-Free"
     ],
-    price: 45,
-    unit: 'kg',
-    stock_qty: 120,
-    is_organic: true,
-    badges: ['Daily Fresh', 'Zero Chemical'],
-    rating_avg: 4.8,
-    rating_count: 42,
-    status: 'active',
-    created_at: '2026-03-01T10:00:00Z',
+    "nutrition": {
+      "calories": "60 kcal/100g",
+      "protein": "0.8g",
+      "carbs": "15g",
+      "fats": "0.4g"
+    },
+    "specifications": {
+      "Origin": "Devgad, Maharashtra",
+      "Grade": "Grade A+ Export",
+      "Shelf Life": "5-7 Days"
+    },
+    "shelf_life": "5-7 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 899,
+    "original_price": 1099,
+    "discount": 18,
+    "unit": "dozen",
+    "stock_qty": 45,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "GI Tagged",
+      "Carbide Free"
+    ],
+    "tags": [
+      "mango",
+      "alphonso",
+      "fruits",
+      "organic"
+    ],
+    "rating_avg": 4.95,
+    "rating_count": 92,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-veg-2',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Mountain Grown Organic Potatoes',
-    slug: 'mountain-grown-organic-potatoes',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Unpolished earthy potatoes grown in nutrient-dense virgin soil. Ideal for daily curries, roasting, and steaming.',
-    benefits: ['Natural complex carbohydrates', 'No chemical cold-storage anti-sprouting agents', 'Earthy authentic taste'],
-    nutrition: { calories: '77 kcal', protein: '2.0g', carbs: '17.5g', fats: '0.1g' },
-    images: [
-      'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-2",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Shopian, Kashmir",
+    "title": "Kashmiri Royal Delicious Red Apples",
+    "slug": "kashmiri-royal-delicious-red-apples",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "Crisp, sweet, high-altitude Kashmiri apples harvested from snow-fed valley orchards without synthetic wax coating.",
+    "benefits": [
+      "Naturally Wax-Free",
+      "High Dietary Fiber & Vitamin C",
+      "Crisp Natural Sweetness"
     ],
-    price: 35,
-    unit: 'kg',
-    stock_qty: 250,
-    is_organic: true,
-    badges: ['Unpolished', 'Pesticide Free'],
-    rating_avg: 4.7,
-    rating_count: 36,
-    status: 'active',
-    created_at: '2026-03-02T11:00:00Z',
+    "nutrition": {
+      "calories": "52 kcal/100g",
+      "protein": "0.3g",
+      "carbs": "14g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Shopian, Kashmir",
+      "Altitude": "2100m",
+      "Shelf Life": "14 Days"
+    },
+    "shelf_life": "14 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 180,
+    "original_price": 220,
+    "discount": 18,
+    "unit": "kg",
+    "stock_qty": 85,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Wax Free",
+      "Kashmiri"
+    ],
+    "tags": [
+      "apple",
+      "kashmir",
+      "fruits"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 88,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-veg-3',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Fresh Baby Spinach (Desi Palak)',
-    slug: 'fresh-baby-spinach-desi-palak',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Tender, crisp iron-rich spinach leaves harvested at daybreak and washed with clean mountain water.',
-    benefits: ['Extremely high in bio-available iron', 'Loaded with Vitamin K and lutein', 'Tender tender leaves'],
-    nutrition: { calories: '23 kcal', protein: '2.9g', carbs: '3.6g', fats: '0.4g' },
-    images: [
-      'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-3",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Jalgaon, Maharashtra",
+    "title": "Robusta Farm-Fresh Yellow Bananas",
+    "slug": "robusta-farm-fresh-yellow-bananas",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "Naturally ripened sweet Robusta bananas rich in potassium and energy. Sourced directly from Jalgaon banana belt.",
+    "benefits": [
+      "Instant Energy Boost",
+      "High Potassium & Vitamin B6",
+      "Zero Chemical Ripening"
     ],
-    price: 30,
-    unit: 'bunch',
-    stock_qty: 45,
-    is_organic: true,
-    badges: ['Morning Harvest', '100% Organic'],
-    rating_avg: 4.9,
-    rating_count: 58,
-    status: 'active',
-    created_at: '2026-03-03T07:00:00Z',
+    "nutrition": {
+      "calories": "89 kcal/100g",
+      "protein": "1.1g",
+      "carbs": "23g",
+      "fats": "0.3g"
+    },
+    "specifications": {
+      "Origin": "Jalgaon, Maharashtra",
+      "Shelf Life": "4-5 Days"
+    },
+    "shelf_life": "4-5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 55,
+    "original_price": 70,
+    "discount": 21,
+    "unit": "dozen",
+    "stock_qty": 120,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Carbide Free"
+    ],
+    "tags": [
+      "banana",
+      "fresh",
+      "fruits"
+    ],
+    "rating_avg": 4.8,
+    "rating_count": 64,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-veg-4',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Crisp Sweet Red Carrots',
-    slug: 'crisp-sweet-red-carrots',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Juicy natural red carrots with unmatched crunch and natural sweetness. Grown without chemical boosters.',
-    benefits: ['Natural Beta-Carotene for eyesight', 'High dietary fiber', 'Crisp and juicy sweet taste'],
-    nutrition: { calories: '41 kcal', protein: '0.9g', carbs: '9.6g', fats: '0.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-4",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Nagpur, Maharashtra",
+    "title": "Nagpur Sweet Mandarin Oranges",
+    "slug": "nagpur-sweet-mandarin-oranges",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Citrus Fruits",
+    "description": "Juicy, tangy-sweet GI-tagged Nagpur oranges bursting with natural Vitamin C and immunity-boosting antioxidants.",
+    "benefits": [
+      "Rich in Vitamin C",
+      "Juicy Thin Peel",
+      "GI Tagged Origin"
     ],
-    price: 40,
-    unit: 'kg',
-    stock_qty: 90,
-    is_organic: true,
-    badges: ['Sweet & Crisp'],
-    rating_avg: 4.85,
-    rating_count: 29,
-    status: 'active',
-    created_at: '2026-03-04T08:00:00Z',
+    "nutrition": {
+      "calories": "47 kcal/100g",
+      "protein": "0.9g",
+      "carbs": "12g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Nagpur, Maharashtra",
+      "Shelf Life": "7 Days"
+    },
+    "shelf_life": "7 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 80,
+    "original_price": 100,
+    "discount": 20,
+    "unit": "kg",
+    "stock_qty": 95,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Nagpur GI",
+      "Vitamin C"
+    ],
+    "tags": [
+      "orange",
+      "citrus",
+      "fruits"
+    ],
+    "rating_avg": 4.85,
+    "rating_count": 52,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-veg-5',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Nashik Organic Red Onions',
-    slug: 'nashik-organic-red-onions',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Pungent, firm Nashik red onions celebrated across India for authentic aroma and long shelf life.',
-    benefits: ['High in quercetin bioflavonoids', 'Strong flavor & natural aroma', 'Grown in mineral-rich volcanic soil'],
-    nutrition: { calories: '40 kcal', protein: '1.1g', carbs: '9.3g', fats: '0.1g' },
-    images: [
-      'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-5",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Nashik, Maharashtra",
+    "title": "Fresh Sonaka Seedless Green Grapes",
+    "slug": "fresh-sonaka-seedless-green-grapes",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "Crisp, elongated Sonaka green grapes with balanced sweetness and zero pesticide residue, hand-picked in Nashik.",
+    "benefits": [
+      "Zero Residue Farming",
+      "Natural Antioxidants",
+      "Thin Crispy Skin"
     ],
-    price: 32,
-    unit: 'kg',
-    stock_qty: 300,
-    is_organic: true,
-    badges: ['Nashik Origin'],
-    rating_avg: 4.75,
-    rating_count: 51,
-    status: 'active',
-    created_at: '2026-03-05T09:00:00Z',
+    "nutrition": {
+      "calories": "69 kcal/100g",
+      "protein": "0.7g",
+      "carbs": "18g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Nashik, Maharashtra",
+      "Shelf Life": "5 Days"
+    },
+    "shelf_life": "5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1596363505729-4190a9506133?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 95,
+    "original_price": 120,
+    "discount": 21,
+    "unit": "500g",
+    "stock_qty": 65,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": false,
+    "badges": [
+      "Nashik Harvest"
+    ],
+    "tags": [
+      "grapes",
+      "fresh"
+    ],
+    "rating_avg": 4.75,
+    "rating_count": 41,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-veg-6',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Farm Fresh Green Bell Peppers',
-    slug: 'farm-fresh-green-bell-peppers',
-    category_id: 'cat-veg',
-    category_name: 'Vegetables',
-    description: 'Crisp green capsicum bursting with freshness. Ideal for salads, stir fries, and traditional stuffed preparations.',
-    benefits: ['Zero pesticide residue', 'Rich in Vitamin C', 'Crisp texture'],
-    nutrition: { calories: '20 kcal', protein: '0.9g', carbs: '4.6g', fats: '0.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-6",
+    "farmer_id": "f-4",
+    "farmer_name": "Devendra Joshi",
+    "farm_name": "Gir Gaushala Naturals",
+    "farmer_location": "Kutch, Gujarat",
+    "title": "Farm Fresh Red Lady Papaya",
+    "slug": "farm-fresh-red-lady-papaya",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Tropical Fruits",
+    "description": "Deep red, naturally sweet Taiwan Red Lady papaya rich in papain digestive enzyme and dietary fiber.",
+    "benefits": [
+      "Supports Digestion",
+      "Rich in Beta-Carotene",
+      "Naturally Sweet"
     ],
-    price: 55,
-    unit: 'kg',
-    stock_qty: 60,
-    is_organic: true,
-    badges: ['Green House Grown'],
-    rating_avg: 4.8,
-    rating_count: 22,
-    status: 'active',
-    created_at: '2026-03-06T10:00:00Z',
-  },
-
-  // --- FRUITS ---
-  {
-    id: 'p-fruit-1',
-    farmer_id: 'f-2',
-    farmer_name: 'Abdul Rashid Mir',
-    farm_name: 'Kashmir Valley Organics',
-    title: 'Kashmiri Royal Delicious Red Apples',
-    slug: 'kashmiri-royal-delicious-red-apples',
-    category_id: 'cat-fruits',
-    category_name: 'Fruits',
-    description: 'Hand-picked from the high-altitude orchards of Shopian, Kashmir. Naturally wax-free, crispy sweet, and fragrant.',
-    benefits: ['100% natural, wax-free skin', 'Grown at 6000+ ft altitude', 'Rich in soluble fiber & antioxidants'],
-    nutrition: { calories: '52 kcal', protein: '0.3g', carbs: '14g', fats: '0.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "43 kcal/100g",
+      "protein": "0.5g",
+      "carbs": "11g",
+      "fats": "0.3g"
+    },
+    "specifications": {
+      "Origin": "Kutch, Gujarat",
+      "Shelf Life": "4 Days"
+    },
+    "shelf_life": "4 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1617112848923-cc2234396a8d?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 180,
-    unit: 'kg',
-    stock_qty: 85,
-    is_organic: true,
-    badges: ['Kashmir Heritage', 'No Wax'],
-    rating_avg: 4.95,
-    rating_count: 88,
-    status: 'active',
-    created_at: '2026-03-01T08:00:00Z',
+    "price": 50,
+    "original_price": 65,
+    "discount": 23,
+    "unit": "piece",
+    "stock_qty": 50,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Farm Fresh"
+    ],
+    "tags": [
+      "papaya",
+      "tropical"
+    ],
+    "rating_avg": 4.7,
+    "rating_count": 39,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-fruit-2',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Ratnagiri Alphonso Mangoes (Hapus)',
-    slug: 'ratnagiri-alphonso-mangoes-hapus',
-    category_id: 'cat-fruits',
-    category_name: 'Fruits',
-    description: 'The King of Mangoes. Tree-ripened in organic hay without any carbide gas or chemical ripening sprays.',
-    benefits: ['Naturally hay-ripened', 'Intensely aromatic saffron-orange pulp', 'Rich in Vitamins A & C'],
-    nutrition: { calories: '60 kcal', protein: '0.8g', carbs: '15g', fats: '0.4g' },
-    images: [
-      'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-7",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Farm Sweet Striped Watermelon",
+    "slug": "farm-sweet-striped-watermelon",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Seasonal Fruits",
+    "description": "Hydrating, crisp red watermelon grown along the Yamuna fertile plains of Haryana with natural compost.",
+    "benefits": [
+      "92% Natural Hydration",
+      "High Lycopene Content",
+      "Chemical Spray Free"
     ],
-    price: 850,
-    unit: 'dozen',
-    stock_qty: 40,
-    is_organic: true,
-    badges: ['Naturally Ripened', 'GI Tagged'],
-    rating_avg: 5.0,
-    rating_count: 64,
-    status: 'active',
-    created_at: '2026-03-05T09:30:00Z',
+    "nutrition": {
+      "calories": "30 kcal/100g",
+      "protein": "0.6g",
+      "carbs": "8g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Weight": "3-4 kg avg",
+      "Shelf Life": "6 Days"
+    },
+    "shelf_life": "6 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 35,
+    "original_price": 45,
+    "discount": 22,
+    "unit": "kg",
+    "stock_qty": 80,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Haryana Harvest",
+      "Sweet & Crisp"
+    ],
+    "tags": [
+      "watermelon",
+      "haryana",
+      "fruits"
+    ],
+    "rating_avg": 4.8,
+    "rating_count": 54,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-fruit-3',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Nagpur Organic Juicy Oranges',
-    slug: 'nagpur-organic-juicy-oranges',
-    category_id: 'cat-fruits',
-    category_name: 'Fruits',
-    description: 'Plump, tangy-sweet oranges straight from Vidarbha orchards. Bursting with fresh citrus juice and immune vitamins.',
-    benefits: ['Direct orchard harvest', 'Rich immune-boosting Vitamin C', 'Easy peeling, super juicy'],
-    nutrition: { calories: '47 kcal', protein: '0.9g', carbs: '11.8g', fats: '0.1g' },
-    images: [
-      'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-8",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Honey Sweet Muskmelon (Kharbuja)",
+    "slug": "honey-sweet-muskmelon-kharbuja",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Seasonal Fruits",
+    "description": "Fragrant, golden-orange flesh muskmelon harvested from sandy loam beds of Karnal with intense natural sweetness.",
+    "benefits": [
+      "Rich in Vitamin A",
+      "Cooling & Hydrating",
+      "Farm Direct"
     ],
-    price: 90,
-    unit: 'kg',
-    stock_qty: 110,
-    is_organic: true,
-    badges: ['Vitamin C Rich'],
-    rating_avg: 4.7,
-    rating_count: 31,
-    status: 'active',
-    created_at: '2026-03-07T12:00:00Z',
+    "nutrition": {
+      "calories": "34 kcal/100g",
+      "protein": "0.8g",
+      "carbs": "8g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Karnal, Haryana",
+      "Shelf Life": "5 Days"
+    },
+    "shelf_life": "5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 45,
+    "original_price": 60,
+    "discount": 25,
+    "unit": "kg",
+    "stock_qty": 60,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": false,
+    "badges": [
+      "Karnal Direct"
+    ],
+    "tags": [
+      "muskmelon",
+      "kharbuja",
+      "fruits"
+    ],
+    "rating_avg": 4.85,
+    "rating_count": 36,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-fruit-4',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Mahabaleshwar Fresh Strawberries',
-    slug: 'mahabaleshwar-fresh-strawberries',
-    category_id: 'cat-fruits',
-    category_name: 'Fruits',
-    description: 'Ruby red, sweet and aromatic strawberries handpicked in the misty valleys of Mahabaleshwar.',
-    benefits: ['Zero chemical preservative coating', 'High in polyphenols & anthocyanins', 'Picked same day as dispatch'],
-    nutrition: { calories: '32 kcal', protein: '0.7g', carbs: '7.7g', fats: '0.3g' },
-    images: [
-      'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-9",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Solapur, Maharashtra",
+    "title": "Bhagwa Sweet Ruby Pomegranate",
+    "slug": "bhagwa-sweet-ruby-pomegranate",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "Deep crimson Bhagwa pomegranates with soft seeds and juicy ruby pearls packed with powerful polyphenols.",
+    "benefits": [
+      "High Antioxidant Value",
+      "Supports Heart Health & Iron Levels",
+      "Soft Seeded Variety"
     ],
-    price: 140,
-    unit: '250g box',
-    stock_qty: 35,
-    is_organic: true,
-    badges: ['Handpicked', 'Super Fresh'],
-    rating_avg: 4.9,
-    rating_count: 47,
-    status: 'active',
-    created_at: '2026-03-08T07:15:00Z',
-  },
-
-  // --- GRAINS ---
-  {
-    id: 'p-grain-1',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Royal Himalayan Organic Basmati Rice',
-    slug: 'royal-himalayan-organic-basmati-rice',
-    category_id: 'cat-grains',
-    category_name: 'Grains',
-    description: 'Aged for 2 full years for extra-long slender grains and mesmerizing natural fragrance. Grown using pure Himalayan glacier stream irrigation.',
-    benefits: ['2-Year Naturally Aged', 'Glacier fed virgin soil', 'Elongates to double its size when cooked'],
-    nutrition: { calories: '130 kcal', protein: '2.7g', carbs: '28g', fats: '0.3g' },
-    images: [
-      'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "83 kcal/100g",
+      "protein": "1.7g",
+      "carbs": "19g",
+      "fats": "1.2g"
+    },
+    "specifications": {
+      "Origin": "Solapur, Maharashtra",
+      "Shelf Life": "10 Days"
+    },
+    "shelf_life": "10 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 195,
-    unit: 'kg',
-    stock_qty: 180,
-    is_organic: true,
-    badges: ['2-Year Aged', 'Pesticide Free'],
-    rating_avg: 4.92,
-    rating_count: 73,
-    status: 'active',
-    created_at: '2026-02-20T10:00:00Z',
-  },
-  {
-    id: 'p-grain-2',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Stone-Ground Sharbati Whole Wheat Flour',
-    slug: 'stone-ground-sharbati-whole-wheat-flour',
-    category_id: 'cat-grains',
-    category_name: 'Grains',
-    description: 'Traditional chakki-milled whole wheat flour retaining the entire wheat germ and bran. Yields exceptionally soft and sweet rotis.',
-    benefits: ['100% Whole Grain with intact germ', 'Cold chakki milled to preserve nutrients', 'Naturally sweet Sehore grain'],
-    nutrition: { calories: '340 kcal', protein: '13.2g', carbs: '72g', fats: '2.5g' },
-    images: [
-      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=800',
+    "price": 160,
+    "original_price": 200,
+    "discount": 20,
+    "unit": "kg",
+    "stock_qty": 70,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Ruby Bhagwa"
     ],
-    price: 275,
-    unit: '5kg pack',
-    stock_qty: 95,
-    is_organic: true,
-    badges: ['Chakki Fresh', 'Whole Bran'],
-    rating_avg: 4.88,
-    rating_count: 53,
-    status: 'active',
-    created_at: '2026-02-22T14:00:00Z',
+    "tags": [
+      "pomegranate",
+      "fruits",
+      "organic"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 78,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-grain-3',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Ancient Organic Pearl Millet (Desi Bajra)',
-    slug: 'ancient-organic-pearl-millet-desi-bajra',
-    category_id: 'cat-grains',
-    category_name: 'Grains',
-    description: 'Drought-resilient ancient millet rich in magnesium, iron, and fiber. Perfect for winter khichdi and traditional bhakri.',
-    benefits: ['Gluten-free nutrient dense grain', 'High iron and mineral profile', 'Zero chemical fertilizer intake'],
-    nutrition: { calories: '378 kcal', protein: '11g', carbs: '73g', fats: '4.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1627735489069-425b066060c5?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-10",
+    "farmer_id": "f-4",
+    "farmer_name": "Devendra Joshi",
+    "farm_name": "Gir Gaushala Naturals",
+    "farmer_location": "Gujarat",
+    "title": "Red Flesh Organic Dragon Fruit (Pitaya)",
+    "slug": "red-flesh-organic-dragon-fruit-pitaya",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Exotic Fruits",
+    "description": "Vibrant magenta-fleshed dragon fruit grown organically in semi-arid soils. Rich in prebiotic fiber and iron.",
+    "benefits": [
+      "Prebiotic Gut Support",
+      "Vibrant Natural Anthocyanins",
+      "Low Glycemic Index"
     ],
-    price: 65,
-    unit: 'kg',
-    stock_qty: 120,
-    is_organic: true,
-    badges: ['Superfood', 'High Iron'],
-    rating_avg: 4.7,
-    rating_count: 19,
-    status: 'active',
-    created_at: '2026-02-24T09:00:00Z',
-  },
-
-  // --- SEEDS ---
-  {
-    id: 'p-seed-1',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Certified Raw Organic Chia Seeds',
-    slug: 'certified-raw-organic-chia-seeds',
-    category_id: 'cat-seeds',
-    category_name: 'Seeds',
-    description: 'Raw, unpasteurized nutrient-dense chia seeds packed with heart-healthy Omega-3 fatty acids and soluble dietary fiber.',
-    benefits: ['Massive Omega-3 ALA content', 'Superior hydration & digestion aid', 'Zero additives or processing'],
-    nutrition: { calories: '486 kcal', protein: '16.5g', carbs: '42.1g', fats: '30.7g' },
-    images: [
-      'https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "60 kcal/100g",
+      "protein": "1.2g",
+      "carbs": "13g",
+      "fats": "0.6g"
+    },
+    "specifications": {
+      "Origin": "Kutch, Gujarat",
+      "Shelf Life": "7 Days"
+    },
+    "shelf_life": "7 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1527325678964-54921661f888?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 185,
-    unit: '250g pack',
-    stock_qty: 70,
-    is_organic: true,
-    badges: ['Omega-3 Boost', 'Raw & Pure'],
-    rating_avg: 4.9,
-    rating_count: 45,
-    status: 'active',
-    created_at: '2026-03-01T15:00:00Z',
-  },
-  {
-    id: 'p-seed-2',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Cold-Cleaned Brown Flax Seeds (Alsi)',
-    slug: 'cold-cleaned-brown-flax-seeds-alsi',
-    category_id: 'cat-seeds',
-    category_name: 'Seeds',
-    description: 'Pure organic flax seeds rich in plant lignans and dietary fiber. Cleaned with air-sifters without harsh chemicals.',
-    benefits: ['Rich in plant lignans and antioxidants', 'Promotes gut & heart wellness', 'Farm-grade purity'],
-    nutrition: { calories: '534 kcal', protein: '18.3g', carbs: '28.9g', fats: '42.2g' },
-    images: [
-      'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?auto=format&fit=crop&q=80&w=800',
+    "price": 140,
+    "original_price": 180,
+    "discount": 22,
+    "unit": "piece",
+    "stock_qty": 40,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Exotic Superfood"
     ],
-    price: 95,
-    unit: '500g pack',
-    stock_qty: 150,
-    is_organic: true,
-    badges: ['High Fiber', 'Natural Lignans'],
-    rating_avg: 4.8,
-    rating_count: 38,
-    status: 'active',
-    created_at: '2026-03-02T16:00:00Z',
+    "tags": [
+      "dragonfruit",
+      "exotic",
+      "fruits"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 45,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-seed-3',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Native Black Mustard Seeds (Rai)',
-    slug: 'native-black-mustard-seeds-rai',
-    category_id: 'cat-seeds',
-    category_name: 'Seeds',
-    description: 'Small, aromatic native black mustard seeds with high essential oil content. An indispensable foundation for Indian tadka.',
-    benefits: ['High natural volatile oil content', 'Strong crackling aroma', 'Unadulterated native seed'],
-    nutrition: { calories: '508 kcal', protein: '26g', carbs: '28g', fats: '36g' },
-    images: [
-      'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-11",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Mahabaleshwar, Maharashtra",
+    "title": "Mahabaleshwar Sweet Strawberries",
+    "slug": "mahabaleshwar-sweet-strawberries",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Exotic Fruits",
+    "description": "Hand-picked, fragrant crimson strawberries from the mist-covered hill slopes of Mahabaleshwar.",
+    "benefits": [
+      "Rich in Vitamin C & Manganese",
+      "Hand-Harvested Daily",
+      "Zero Artificial Sweeteners"
     ],
-    price: 55,
-    unit: '200g pack',
-    stock_qty: 200,
-    is_organic: true,
-    badges: ['High Essential Oil'],
-    rating_avg: 4.85,
-    rating_count: 27,
-    status: 'active',
-    created_at: '2026-03-04T12:00:00Z',
-  },
-
-  // --- DAIRY PRODUCTS ---
-  {
-    id: 'p-dairy-1',
-    farmer_id: 'f-4',
-    farmer_name: 'Devendra Joshi',
-    farm_name: 'Gir Gaushala Naturals',
-    title: 'Pure A2 Gir Cow Fresh Raw Milk',
-    slug: 'pure-a2-gir-cow-fresh-raw-milk',
-    category_id: 'cat-dairy',
-    category_name: 'Dairy Products',
-    description: 'Untouched raw milk from free-grazing indigenous Gir cows. Naturally contains pure A2 beta-casein protein and zero hormones or antibiotics.',
-    benefits: ['Pure A2 Beta-Casein Protein', 'Cruelty-free free-grazing cows', 'Chilled immediately after morning milking'],
-    nutrition: { calories: '64 kcal', protein: '3.4g', carbs: '4.8g', fats: '3.6g' },
-    images: [
-      'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "32 kcal/100g",
+      "protein": "0.7g",
+      "carbs": "7.7g",
+      "fats": "0.3g"
+    },
+    "specifications": {
+      "Origin": "Mahabaleshwar, Maharashtra",
+      "Shelf Life": "3-4 Days"
+    },
+    "shelf_life": "3-4 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 85,
-    unit: 'litre',
-    stock_qty: 40,
-    is_organic: true,
-    badges: ['A2 Certified', 'Hormone Free'],
-    rating_avg: 4.98,
-    rating_count: 110,
-    status: 'active',
-    created_at: '2026-03-08T06:00:00Z',
-  },
-  {
-    id: 'p-dairy-2',
-    farmer_id: 'f-4',
-    farmer_name: 'Devendra Joshi',
-    farm_name: 'Gir Gaushala Naturals',
-    title: 'Handcrafted Desi Cow Milk Paneer',
-    slug: 'handcrafted-desi-cow-milk-paneer',
-    category_id: 'cat-dairy',
-    category_name: 'Dairy Products',
-    description: 'Soft, melt-in-mouth cottage cheese curdled naturally with lemon juice without chemical coagulants or starch fillers.',
-    benefits: ['Zero chemical coagulants', 'Rich in natural milk protein', 'Extremely soft & tender texture'],
-    nutrition: { calories: '265 kcal', protein: '18.3g', carbs: '1.2g', fats: '20.8g' },
-    images: [
-      'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800',
+    "price": 110,
+    "original_price": 140,
+    "discount": 21,
+    "unit": "200g box",
+    "stock_qty": 50,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Mahabaleshwar Origin"
     ],
-    price: 130,
-    unit: '200g pack',
-    stock_qty: 30,
-    is_organic: true,
-    badges: ['Freshly Curdled', 'No Starch'],
-    rating_avg: 4.95,
-    rating_count: 65,
-    status: 'active',
-    created_at: '2026-03-08T06:30:00Z',
+    "tags": [
+      "strawberry",
+      "berry",
+      "fruits"
+    ],
+    "rating_avg": 4.92,
+    "rating_count": 110,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-dairy-3',
-    farmer_id: 'f-4',
-    farmer_name: 'Devendra Joshi',
-    farm_name: 'Gir Gaushala Naturals',
-    title: 'Traditional Vedic Bilona A2 Cow Ghee',
-    slug: 'traditional-vedic-bilona-a2-cow-ghee',
-    category_id: 'cat-dairy',
-    category_name: 'Dairy Products',
-    description: 'Prepared using ancient 5-step Bilona method: cultured whole curd hand-churned with wooden madhani and slow-simmered over cow dung embers.',
-    benefits: ['Authentic Ayurvedic Bilona method', 'Rich golden granular texture', 'Contains Butyric acid & fat-soluble vitamins'],
-    nutrition: { calories: '884 kcal', protein: '0g', carbs: '0g', fats: '99.8g' },
-    images: [
-      'https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-12",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Srinagar, Kashmir",
+    "title": "Kashmiri Fresh Sweet Dark Cherries",
+    "slug": "kashmiri-fresh-sweet-dark-cherries",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Seasonal Fruits",
+    "description": "Plump, dark red Himalayan cherries with succulent sweet flesh harvested from Harwan valley orchards.",
+    "benefits": [
+      "Natural Melatonin for Sleep",
+      "Anti-Inflammatory Properties",
+      "Short Seasonal Harvest"
     ],
-    price: 1450,
-    unit: '500ml jar',
-    stock_qty: 50,
-    is_organic: true,
-    badges: ['Vedic Bilona', 'A2 Golden Ghee'],
-    rating_avg: 5.0,
-    rating_count: 140,
-    status: 'active',
-    created_at: '2026-03-01T10:00:00Z',
-  },
-
-  // --- SPICES ---
-  {
-    id: 'p-spice-1',
-    farmer_id: 'f-2',
-    farmer_name: 'Abdul Rashid Mir',
-    farm_name: 'Kashmir Valley Organics',
-    title: 'Pure Kashmiri Mongra Saffron (Grade A1)',
-    slug: 'pure-kashmiri-mongra-saffron-grade-a1',
-    category_id: 'cat-spices',
-    category_name: 'Spices',
-    description: 'Pure red saffron stigmata cultivated in the unique lacustrine plateau soil of Pampore, Kashmir. World renowned for highest crocin color and safranal aroma.',
-    benefits: ['Grade A1 Mongra stigmata only', 'Direct from saffron growers of Pampore', 'Highest natural coloring strength'],
-    nutrition: { calories: '310 kcal', protein: '11.4g', carbs: '65g', fats: '5.8g' },
-    images: [
-      'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "50 kcal/100g",
+      "protein": "1.0g",
+      "carbs": "12g",
+      "fats": "0.3g"
+    },
+    "specifications": {
+      "Origin": "Srinagar, Kashmir",
+      "Shelf Life": "5 Days"
+    },
+    "shelf_life": "5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 490,
-    unit: '1g box',
-    stock_qty: 100,
-    is_organic: true,
-    badges: ['Pampore GI Tag', 'Laboratory Certified'],
-    rating_avg: 5.0,
-    rating_count: 185,
-    status: 'active',
-    created_at: '2026-02-15T09:00:00Z',
-  },
-  {
-    id: 'p-spice-2',
-    farmer_id: 'f-2',
-    farmer_name: 'Abdul Rashid Mir',
-    farm_name: 'Kashmir Valley Organics',
-    title: 'High-Curcumin Lakadong Turmeric Powder',
-    slug: 'high-curcumin-lakadong-turmeric-powder',
-    category_id: 'cat-spices',
-    category_name: 'Spices',
-    description: 'Known as the finest turmeric on Earth, grown in the Jaintia Hills with an extraordinary 7.5%+ natural curcumin percentage.',
-    benefits: ['7.5%+ natural curcumin content', 'Triple-tested for zero lead chromate', 'Potent anti-inflammatory properties'],
-    nutrition: { calories: '354 kcal', protein: '7.8g', carbs: '64.9g', fats: '9.9g' },
-    images: [
-      'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&q=80&w=800',
+    "price": 220,
+    "original_price": 275,
+    "discount": 20,
+    "unit": "250g",
+    "stock_qty": 35,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Kashmir Valley"
     ],
-    price: 165,
-    unit: '250g jar',
-    stock_qty: 80,
-    is_organic: true,
-    badges: ['7.5% Curcumin', 'Lead-Free'],
-    rating_avg: 4.95,
-    rating_count: 92,
-    status: 'active',
-    created_at: '2026-02-28T11:00:00Z',
+    "tags": [
+      "cherry",
+      "kashmir",
+      "fruits"
+    ],
+    "rating_avg": 4.96,
+    "rating_count": 68,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-spice-3',
-    farmer_id: 'f-2',
-    farmer_name: 'Abdul Rashid Mir',
-    farm_name: 'Kashmir Valley Organics',
-    title: 'Malabar Bold Green Cardamom (8mm+)',
-    slug: 'malabar-bold-green-cardamom-8mm',
-    category_id: 'cat-spices',
-    category_name: 'Spices',
-    description: 'Plump extra-bold green cardamom pods handpicked in the Western Ghats. Sun-dried slowly to preserve essential oils.',
-    benefits: ['8mm+ extra bold pods', 'Naturally sun-dried green', 'Intense sweet minty aroma'],
-    nutrition: { calories: '311 kcal', protein: '10.8g', carbs: '68.5g', fats: '6.7g' },
-    images: [
-      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-13",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Wild Desi Black Jamun",
+    "slug": "wild-desi-black-jamun",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Seasonal Fruits",
+    "description": "Dark purple wild Indian blackberries renowned in Ayurveda for blood sugar management and hemoglobin support.",
+    "benefits": [
+      "Ayurvedic Blood Sugar Support",
+      "Rich in Iron & Potassium",
+      "Forest Harvested"
     ],
-    price: 260,
-    unit: '100g pack',
-    stock_qty: 65,
-    is_organic: true,
-    badges: ['8mm Extra Bold', 'Sun Dried'],
-    rating_avg: 4.88,
-    rating_count: 54,
-    status: 'active',
-    created_at: '2026-03-01T12:00:00Z',
-  },
-
-  // --- OTHER AGRICULTURAL PRODUCTS ---
-  {
-    id: 'p-other-1',
-    farmer_id: 'f-3',
-    farmer_name: 'Gurpreet Singh',
-    farm_name: 'Punjab Bio Fields',
-    title: 'Cold Pressed Wood-Churned Mustard Oil (Kachi Ghani)',
-    slug: 'cold-pressed-wood-churned-mustard-oil',
-    category_id: 'cat-other',
-    category_name: 'Other Agricultural Products',
-    description: 'Extracted in wooden kohlus below 45°C without chemical solvents or petroleum refining. Preserves pungent natural pungency and antioxidants.',
-    benefits: ['Zero chemical solvents or argemone', 'Cold wood pressed below 45°C', 'High natural smoke point'],
-    nutrition: { calories: '884 kcal', protein: '0g', carbs: '0g', fats: '100g' },
-    images: [
-      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=800',
+    "nutrition": {
+      "calories": "60 kcal/100g",
+      "protein": "0.7g",
+      "carbs": "14g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "3 Days"
+    },
+    "shelf_life": "3 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1543528176-61b239494933?auto=format&fit=crop&q=80&w=800"
     ],
-    price: 240,
-    unit: '1 Litre bottle',
-    stock_qty: 110,
-    is_organic: true,
-    badges: ['Wood Churned', 'Cold Pressed'],
-    rating_avg: 4.9,
-    rating_count: 76,
-    status: 'active',
-    created_at: '2026-03-03T14:00:00Z',
-  },
-  {
-    id: 'p-other-2',
-    farmer_id: 'f-2',
-    farmer_name: 'Abdul Rashid Mir',
-    farm_name: 'Kashmir Valley Organics',
-    title: 'Raw Unprocessed Wild Forest Honey',
-    slug: 'raw-unprocessed-wild-forest-honey',
-    category_id: 'cat-other',
-    category_name: 'Other Agricultural Products',
-    description: 'Pure multi-flora honey collected by indigenous forest gatherers. Never heated, ultra-filtered, or adulterated with sugar syrups.',
-    benefits: ['Raw & unheated with live pollen', 'Zero C3/C4 corn syrup adulteration', 'Rich enzymes and floral aroma'],
-    nutrition: { calories: '304 kcal', protein: '0.3g', carbs: '82.4g', fats: '0g' },
-    images: [
-      'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800',
+    "price": 120,
+    "original_price": 150,
+    "discount": 20,
+    "unit": "500g",
+    "stock_qty": 30,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": false,
+    "badges": [
+      "Ayurvedic Jamun"
     ],
-    price: 380,
-    unit: '500g jar',
-    stock_qty: 55,
-    is_organic: true,
-    badges: ['Raw & Unheated', 'Forest Flora'],
-    rating_avg: 4.96,
-    rating_count: 82,
-    status: 'active',
-    created_at: '2026-03-04T15:00:00Z',
+    "tags": [
+      "jamun",
+      "seasonal",
+      "fruits"
+    ],
+    "rating_avg": 4.82,
+    "rating_count": 38,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
   {
-    id: 'p-other-3',
-    farmer_id: 'f-1',
-    farmer_name: 'Rajesh Patel',
-    farm_name: 'Patel Organic Farms',
-    title: 'Enriched Bio-Organic Vermicompost',
-    slug: 'enriched-bio-organic-vermicompost',
-    category_id: 'cat-other',
-    category_name: 'Other Agricultural Products',
-    description: '100% natural organic soil conditioner digested by Eisenia Fetida earthworms. Enriched with neem cake and beneficial microbes for home gardens.',
-    benefits: ['Loaded with soil microbiomes & humic acid', 'Zero weed seeds or odor', 'Safe for all organic vegetables & flowers'],
-    nutrition: {},
-    images: [
-      'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=800',
+    "id": "p-fr-14",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Dahanu, Maharashtra",
+    "title": "Dahanu Sweet Gholvad Chikoo (Sapota)",
+    "slug": "dahanu-sweet-gholvad-chikoo-sapota",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Fresh Fruits",
+    "description": "GI-tagged Gholvad sapotas with caramel-sweet grainy pulp and rich calcium content grown along Arabian coast.",
+    "benefits": [
+      "GI Tagged Gholvad Variety",
+      "Natural Caramel Sweetness",
+      "High Calcium & Iron"
     ],
-    price: 180,
-    unit: '5kg bag',
-    stock_qty: 140,
-    is_organic: true,
-    badges: ['Neem Enriched', 'Garden Gold'],
-    rating_avg: 4.8,
-    rating_count: 34,
-    status: 'active',
-    created_at: '2026-03-05T16:00:00Z',
+    "nutrition": {
+      "calories": "83 kcal/100g",
+      "protein": "0.4g",
+      "carbs": "20g",
+      "fats": "1.1g"
+    },
+    "specifications": {
+      "Origin": "Dahanu, Maharashtra",
+      "Shelf Life": "4-5 Days"
+    },
+    "shelf_life": "4-5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 60,
+    "original_price": 75,
+    "discount": 20,
+    "unit": "kg",
+    "stock_qty": 75,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "GI Tagged",
+      "Caramel Sweet"
+    ],
+    "tags": [
+      "chikoo",
+      "sapota",
+      "fruits"
+    ],
+    "rating_avg": 4.78,
+    "rating_count": 42,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
   },
+  {
+    "id": "p-fr-15",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "Farm Fresh Kagzi Yellow Lemons",
+    "slug": "farm-fresh-kagzi-yellow-lemons",
+    "category_id": "cat-fruits",
+    "category_name": "Fruits",
+    "subcategory": "Citrus Fruits",
+    "description": "Thin-skinned, extraordinarily juicy Kagzi lemons hand-plucked from sunlit orchards of Haryana.",
+    "benefits": [
+      "High Citric Acid & Vitamin C",
+      "Thin Skin High Juice Yield",
+      "Pesticide Free"
+    ],
+    "nutrition": {
+      "calories": "29 kcal/100g",
+      "protein": "1.1g",
+      "carbs": "9g",
+      "fats": "0.3g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "12 Days"
+    },
+    "shelf_life": "12 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 40,
+    "original_price": 50,
+    "discount": 20,
+    "unit": "250g",
+    "stock_qty": 110,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Extra Juicy"
+    ],
+    "tags": [
+      "lemon",
+      "citrus",
+      "fruits"
+    ],
+    "rating_avg": 4.85,
+    "rating_count": 59,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-1",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Fresh Haryana Red Onion",
+    "slug": "fresh-haryana-red-onion",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Bulb Vegetables",
+    "description": "Pungent, firm, sun-dried red onions grown in the fertile soils of Panipat. Ideal storage life with intense natural aroma.",
+    "benefits": [
+      "Rich in Quercetin Antioxidant",
+      "Sun-Cured for Long Storage Life",
+      "Direct Farm Traceability"
+    ],
+    "nutrition": {
+      "calories": "40 kcal/100g",
+      "protein": "1.1g",
+      "carbs": "9.3g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Mandi": "Panipat Krishi Mandi",
+      "Shelf Life": "21 Days"
+    },
+    "shelf_life": "21 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 45,
+    "original_price": 55,
+    "discount": 18,
+    "unit": "kg",
+    "stock_qty": 250,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Panipat Direct",
+      "Kitchen Staple"
+    ],
+    "tags": [
+      "onion",
+      "vegetables",
+      "haryana",
+      "panipat"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 120,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-2",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Nashik, Maharashtra",
+    "title": "Farm Fresh Organic Tomatoes",
+    "slug": "farm-fresh-organic-tomatoes",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Fresh Vegetables",
+    "description": "Vine-ripened, naturally sweet organic tomatoes harvested at dawn. Free from synthetic chemicals and artificial ripeners.",
+    "benefits": [
+      "Rich in Lycopene",
+      "High Vitamin C & Potassium",
+      "Vine-Ripened Natural Aroma"
+    ],
+    "nutrition": {
+      "calories": "18 kcal/100g",
+      "protein": "0.9g",
+      "carbs": "3.9g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Nashik, Maharashtra",
+      "Shelf Life": "7 Days"
+    },
+    "shelf_life": "7 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 45,
+    "original_price": 55,
+    "discount": 18,
+    "unit": "kg",
+    "stock_qty": 180,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Daily Fresh",
+      "Zero Chemical"
+    ],
+    "tags": [
+      "tomato",
+      "vegetables",
+      "organic"
+    ],
+    "rating_avg": 4.8,
+    "rating_count": 85,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-3",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Ludhiana, Punjab",
+    "title": "Mountain Grown Organic Potatoes",
+    "slug": "mountain-grown-organic-potatoes",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Root Vegetables",
+    "description": "Unpolished earthy potatoes grown in nutrient-dense soil. Zero anti-sprouting chemicals or cold-storage coatings.",
+    "benefits": [
+      "Complex Natural Carbohydrates",
+      "Unpolished & Chemical Free",
+      "Earthy Authentic Taste"
+    ],
+    "nutrition": {
+      "calories": "77 kcal/100g",
+      "protein": "2.0g",
+      "carbs": "17.5g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Ludhiana, Punjab",
+      "Shelf Life": "20 Days"
+    },
+    "shelf_life": "20 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 35,
+    "original_price": 45,
+    "discount": 22,
+    "unit": "kg",
+    "stock_qty": 300,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Unpolished",
+      "Pesticide Free"
+    ],
+    "tags": [
+      "potato",
+      "root",
+      "vegetables"
+    ],
+    "rating_avg": 4.75,
+    "rating_count": 92,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-4",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Fresh Baby Spinach (Desi Palak)",
+    "slug": "fresh-baby-spinach-desi-palak",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Leafy Vegetables",
+    "description": "Tender, crisp iron-rich spinach leaves harvested at daybreak and washed with pure tube-well water. Zero chemical spray.",
+    "benefits": [
+      "High Natural Iron & Folate",
+      "Rich in Vitamins A & K",
+      "Harvested Same Morning"
+    ],
+    "nutrition": {
+      "calories": "23 kcal/100g",
+      "protein": "2.9g",
+      "carbs": "3.6g",
+      "fats": "0.4g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "2-3 Days"
+    },
+    "shelf_life": "2-3 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 30,
+    "original_price": 40,
+    "discount": 25,
+    "unit": "500g",
+    "stock_qty": 90,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Morning Harvest"
+    ],
+    "tags": [
+      "spinach",
+      "palak",
+      "leafy",
+      "vegetables"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 74,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-5",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Delhi Red Sweet Winter Carrots",
+    "slug": "delhi-red-sweet-winter-carrots",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Root Vegetables",
+    "description": "Crunchy, heirloom desi red carrots with tender core and rich natural sugar content. Perfect for salads and Gajar Halwa.",
+    "benefits": [
+      "High Beta-Carotene & Vitamin A",
+      "Naturally Sweet Desi Variety",
+      "Crisp Texture"
+    ],
+    "nutrition": {
+      "calories": "41 kcal/100g",
+      "protein": "0.9g",
+      "carbs": "9.6g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "8 Days"
+    },
+    "shelf_life": "8 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 40,
+    "original_price": 50,
+    "discount": 20,
+    "unit": "kg",
+    "stock_qty": 140,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Heirloom Red"
+    ],
+    "tags": [
+      "carrot",
+      "gajar",
+      "root",
+      "vegetables"
+    ],
+    "rating_avg": 4.86,
+    "rating_count": 62,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-6",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Tender Farm Green Lauki (Bottle Gourd)",
+    "slug": "tender-farm-green-lauki-bottle-gourd",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Gourds",
+    "description": "Slender, light-green organic bottle gourd harvested young for maximum juiciness and tender seeds. Easily digestible.",
+    "benefits": [
+      "Cooling for Body & Liver",
+      "Extremely Low Calorie",
+      "High Moisture Content"
+    ],
+    "nutrition": {
+      "calories": "14 kcal/100g",
+      "protein": "0.6g",
+      "carbs": "3.4g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "5 Days"
+    },
+    "shelf_life": "5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 30,
+    "original_price": 40,
+    "discount": 25,
+    "unit": "piece",
+    "stock_qty": 75,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Tender Lauki"
+    ],
+    "tags": [
+      "lauki",
+      "gourd",
+      "vegetables"
+    ],
+    "rating_avg": 4.75,
+    "rating_count": 48,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-7",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "Tender Desi Okra (Bhindi)",
+    "slug": "tender-desi-okra-bhindi",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Fresh Vegetables",
+    "description": "Crisp, slender ladyfinger pods picked before maturity to ensure tenderness and zero fiber hardness.",
+    "benefits": [
+      "Rich in Soluble Fiber",
+      "Low Glycemic Index",
+      "Zero Pesticide Residue"
+    ],
+    "nutrition": {
+      "calories": "33 kcal/100g",
+      "protein": "1.9g",
+      "carbs": "7.5g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "4 Days"
+    },
+    "shelf_life": "4 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1425543103986-22abb7d7e8d2?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 40,
+    "original_price": 50,
+    "discount": 20,
+    "unit": "500g",
+    "stock_qty": 85,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Tender Pods"
+    ],
+    "tags": [
+      "bhindi",
+      "okra",
+      "vegetables"
+    ],
+    "rating_avg": 4.8,
+    "rating_count": 51,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-8",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Punjab",
+    "title": "Punjab Sarson Saag Leaves (Mustard Greens)",
+    "slug": "punjab-sarson-saag-leaves-mustard-greens",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Leafy Vegetables",
+    "description": "Pungent, authentic broad mustard green leaves grown on traditional organic fields of Punjab. Quintessential saag green.",
+    "benefits": [
+      "Rich in Glucosinolates",
+      "High Vitamins C & E",
+      "Traditional Winter Crop"
+    ],
+    "nutrition": {
+      "calories": "27 kcal/100g",
+      "protein": "2.7g",
+      "carbs": "4.7g",
+      "fats": "0.4g"
+    },
+    "specifications": {
+      "Origin": "Khanna, Punjab",
+      "Shelf Life": "3 Days"
+    },
+    "shelf_life": "3 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 35,
+    "original_price": 45,
+    "discount": 22,
+    "unit": "500g",
+    "stock_qty": 65,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Sarson Saag"
+    ],
+    "tags": [
+      "sarson",
+      "saag",
+      "leafy",
+      "vegetables"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 67,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-9",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Himachal Pradesh",
+    "title": "Shimla Crisp Green Capsicum",
+    "slug": "shimla-crisp-green-capsicum",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Fresh Vegetables",
+    "description": "Glossy, thick-walled green bell peppers grown in the cool climate of Himachal with juicy crunch.",
+    "benefits": [
+      "Rich in Antioxidant Vitamin C",
+      "Thick Crunchy Walls",
+      "Cold-Climate Grown"
+    ],
+    "nutrition": {
+      "calories": "20 kcal/100g",
+      "protein": "0.9g",
+      "carbs": "4.6g",
+      "fats": "0.2g"
+    },
+    "specifications": {
+      "Origin": "Shimla, Himachal Pradesh",
+      "Shelf Life": "7 Days"
+    },
+    "shelf_life": "7 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 45,
+    "original_price": 60,
+    "discount": 25,
+    "unit": "500g",
+    "stock_qty": 80,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Shimla Fresh"
+    ],
+    "tags": [
+      "capsicum",
+      "shimlamirch",
+      "vegetables"
+    ],
+    "rating_avg": 4.82,
+    "rating_count": 43,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-vg-10",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Crisp Farm Kheera (Cucumber)",
+    "slug": "crisp-farm-kheera-cucumber",
+    "category_id": "cat-veg",
+    "category_name": "Vegetables",
+    "subcategory": "Fresh Vegetables",
+    "description": "Refreshing, field-grown green cucumber with crunchy texture and cooling hydration.",
+    "benefits": [
+      "96% Natural Water",
+      "Digestive Enzymes",
+      "Zero Chemical Coating"
+    ],
+    "nutrition": {
+      "calories": "15 kcal/100g",
+      "protein": "0.7g",
+      "carbs": "3.6g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Shelf Life": "5 Days"
+    },
+    "shelf_life": "5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1449339854873-750e6913301b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 30,
+    "original_price": 40,
+    "discount": 25,
+    "unit": "kg",
+    "stock_qty": 110,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Hydrating Crisp"
+    ],
+    "tags": [
+      "kheera",
+      "cucumber",
+      "vegetables"
+    ],
+    "rating_avg": 4.75,
+    "rating_count": 46,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-1",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Royal Himalayan Aged 1121 Basmati Rice",
+    "slug": "royal-himalayan-aged-1121-basmati-rice",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Rice",
+    "description": "Authentic extra-long grain Pusa 1121 Basmati rice, aged naturally for 24 months to yield non-sticky, fragrant grains that elongate to over 20mm when cooked.",
+    "benefits": [
+      "Aged 2 Years Naturally",
+      "Elongates up to 22mm",
+      "Geographical Indication Protected",
+      "Aromatic Natural Fragrance"
+    ],
+    "nutrition": {
+      "calories": "350 kcal/100g",
+      "protein": "8.5g",
+      "carbs": "78g",
+      "fats": "0.6g"
+    },
+    "specifications": {
+      "Variety": "Pusa 1121 Extra Long",
+      "Origin": "Karnal, Haryana",
+      "Aging": "24 Months",
+      "Shelf Life": "24 Months"
+    },
+    "shelf_life": "24 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 195,
+    "original_price": 240,
+    "discount": 19,
+    "unit": "kg",
+    "stock_qty": 200,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "2-Year Aged",
+      "GI Tagged Basmati"
+    ],
+    "tags": [
+      "rice",
+      "basmati",
+      "karnal",
+      "grains"
+    ],
+    "rating_avg": 4.95,
+    "rating_count": 140,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-2",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Ludhiana, Punjab",
+    "title": "MP Sharbati Golden Whole Wheat Grain",
+    "slug": "mp-sharbati-golden-whole-wheat-grain",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Wheat",
+    "description": "The premier grade of Indian wheat, Sharbati grains are heavy, golden, with high natural sweetness and moisture for softer rotis.",
+    "benefits": [
+      "High Natural Gluten & Moisture",
+      "Golden Lustrous Grains",
+      "Makes Soft Rotis for 12+ Hours"
+    ],
+    "nutrition": {
+      "calories": "340 kcal/100g",
+      "protein": "12.5g",
+      "carbs": "71g",
+      "fats": "1.7g"
+    },
+    "specifications": {
+      "Origin": "Sehore / Punjab",
+      "Grade": "Premium Sharbati",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 55,
+    "original_price": 65,
+    "discount": 15,
+    "unit": "kg",
+    "stock_qty": 350,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Sharbati Gehun"
+    ],
+    "tags": [
+      "wheat",
+      "sharbati",
+      "grains"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 110,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-3",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Ludhiana, Punjab",
+    "title": "100% Sharbati Chakki Fresh Atta",
+    "slug": "100-sharbati-chakki-fresh-atta",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Flour & Atta",
+    "description": "Stone ground at low RPM to preserve dietary fiber, wheat germ, and essential B-vitamins without maida or preservatives.",
+    "benefits": [
+      "Stone Ground Cold-Chakki",
+      "100% Whole Wheat Bran Included",
+      "Zero Additives or Bleach"
+    ],
+    "nutrition": {
+      "calories": "340 kcal/100g",
+      "protein": "12.0g",
+      "carbs": "72g",
+      "fats": "1.8g"
+    },
+    "specifications": {
+      "Origin": "Punjab",
+      "Processing": "Stone Chakki",
+      "Shelf Life": "3 Months"
+    },
+    "shelf_life": "3 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 245,
+    "original_price": 290,
+    "discount": 16,
+    "unit": "5kg bag",
+    "stock_qty": 150,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Chakki Fresh"
+    ],
+    "tags": [
+      "atta",
+      "flour",
+      "wheat"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 95,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-4",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Organic Desi Bajra (Pearl Millet)",
+    "slug": "organic-desi-bajra-pearl-millet",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Millets",
+    "description": "Gluten-free traditional winter pearl millet from Haryana, loaded with iron, zinc, and dietary fiber.",
+    "benefits": [
+      "Rich in Dietary Iron & Zinc",
+      "Naturally 100% Gluten-Free",
+      "Warm Energy for Winter Diet"
+    ],
+    "nutrition": {
+      "calories": "361 kcal/100g",
+      "protein": "11.6g",
+      "carbs": "67g",
+      "fats": "5.0g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Crop": "Kharif Harvest",
+      "Shelf Life": "9 Months"
+    },
+    "shelf_life": "9 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1607672632458-9eb56696346b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 45,
+    "original_price": 55,
+    "discount": 18,
+    "unit": "kg",
+    "stock_qty": 180,
+    "is_organic": true,
+    "is_seasonal": true,
+    "is_featured": false,
+    "badges": [
+      "Desi Bajra"
+    ],
+    "tags": [
+      "bajra",
+      "millet",
+      "grains",
+      "haryana"
+    ],
+    "rating_avg": 4.84,
+    "rating_count": 58,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-5",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Karnataka",
+    "title": "Karnataka Nutrient-Rich Red Ragi (Finger Millet)",
+    "slug": "karnataka-nutrient-rich-red-ragi-finger-millet",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Millets",
+    "description": "Calcium powerhouse finger millet, essential for healthy bone density, infant porridge, and wholesome dosas.",
+    "benefits": [
+      "344mg Calcium per 100g",
+      "High Amino Acid Content",
+      "Low Glycemic Index"
+    ],
+    "nutrition": {
+      "calories": "328 kcal/100g",
+      "protein": "7.3g",
+      "carbs": "72g",
+      "fats": "1.3g"
+    },
+    "specifications": {
+      "Origin": "Karnataka",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 55,
+    "original_price": 68,
+    "discount": 19,
+    "unit": "kg",
+    "stock_qty": 120,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "High Calcium Superfood"
+    ],
+    "tags": [
+      "ragi",
+      "millet",
+      "grains"
+    ],
+    "rating_avg": 4.89,
+    "rating_count": 72,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-gr-6",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Whole Grain Organic Brown Rice",
+    "slug": "whole-grain-organic-brown-rice",
+    "category_id": "cat-grains",
+    "category_name": "Grains & Cereals",
+    "subcategory": "Rice",
+    "description": "Unpolished brown basmati rice retaining natural outer bran layer, rich in magnesium, selenium, and dietary fiber.",
+    "benefits": [
+      "Low GI Complex Carbohydrates",
+      "Unpolished Outer Bran Intact",
+      "Rich in Selenium & Magnesium"
+    ],
+    "nutrition": {
+      "calories": "355 kcal/100g",
+      "protein": "7.9g",
+      "carbs": "77g",
+      "fats": "2.9g"
+    },
+    "specifications": {
+      "Origin": "Karnal, Haryana",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 120,
+    "original_price": 150,
+    "discount": 20,
+    "unit": "kg",
+    "stock_qty": 140,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Unpolished Bran"
+    ],
+    "tags": [
+      "brownrice",
+      "rice",
+      "grains"
+    ],
+    "rating_avg": 4.8,
+    "rating_count": 49,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pu-1",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Latur, Maharashtra",
+    "title": "Unpolished Organic Toor Dal (Arhar)",
+    "slug": "unpolished-organic-toor-dal-arhar",
+    "category_id": "cat-pulses",
+    "category_name": "Pulses & Legumes",
+    "subcategory": "Dals",
+    "description": "Sun-dried pigeon pea split dal with zero chemical polish, marble powder, or synthetic oil treatment. Cooks creamy.",
+    "benefits": [
+      "Zero Chemical Polish or Color",
+      "22% Plant Protein",
+      "Rich Natural Dal Aroma"
+    ],
+    "nutrition": {
+      "calories": "343 kcal/100g",
+      "protein": "22.3g",
+      "carbs": "62g",
+      "fats": "1.5g"
+    },
+    "specifications": {
+      "Origin": "Latur, Maharashtra",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1585994192701-f1a505c817ea?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 165,
+    "original_price": 195,
+    "discount": 15,
+    "unit": "kg",
+    "stock_qty": 190,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Unpolished Dal",
+      "High Protein"
+    ],
+    "tags": [
+      "toordal",
+      "arhar",
+      "pulses"
+    ],
+    "rating_avg": 4.92,
+    "rating_count": 115,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pu-2",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Rajasthan",
+    "title": "Unpolished Yellow Split Moong Dal",
+    "slug": "unpolished-yellow-split-moong-dal",
+    "category_id": "cat-pulses",
+    "category_name": "Pulses & Legumes",
+    "subcategory": "Dals",
+    "description": "Light on digestion, quick-cooking yellow split moong beans, ideal for light khichdi and daily protein bowls.",
+    "benefits": [
+      "Easiest Dal to Digest",
+      "High Folate & Potassium",
+      "Unpolished Raw Processing"
+    ],
+    "nutrition": {
+      "calories": "347 kcal/100g",
+      "protein": "24.0g",
+      "carbs": "63g",
+      "fats": "1.2g"
+    },
+    "specifications": {
+      "Origin": "Rajasthan",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 135,
+    "original_price": 160,
+    "discount": 16,
+    "unit": "kg",
+    "stock_qty": 160,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Easy Digest"
+    ],
+    "tags": [
+      "moong",
+      "dal",
+      "pulses"
+    ],
+    "rating_avg": 4.85,
+    "rating_count": 78,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pu-3",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Jammu & Kashmir",
+    "title": "Authentic Kashmiri Red Rajma (Kidney Beans)",
+    "slug": "authentic-kashmiri-red-rajma-kidney-beans",
+    "category_id": "cat-pulses",
+    "category_name": "Pulses & Legumes",
+    "subcategory": "Beans",
+    "description": "Small-grained, blood-red kidney beans from mountain slopes of Bhaderwah, J&K. Melts in mouth with velvety gravy.",
+    "benefits": [
+      "Bhaderwah Kashmiri Origin",
+      "Cooks Tender & Velvety",
+      "No Artificial Coloring"
+    ],
+    "nutrition": {
+      "calories": "333 kcal/100g",
+      "protein": "24.0g",
+      "carbs": "60g",
+      "fats": "0.8g"
+    },
+    "specifications": {
+      "Origin": "Bhaderwah, J&K",
+      "Shelf Life": "18 Months"
+    },
+    "shelf_life": "18 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 180,
+    "original_price": 220,
+    "discount": 18,
+    "unit": "kg",
+    "stock_qty": 110,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Kashmiri Bhaderwah"
+    ],
+    "tags": [
+      "rajma",
+      "kashmir",
+      "beans",
+      "pulses"
+    ],
+    "rating_avg": 4.96,
+    "rating_count": 130,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pu-4",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "Desi Brown Kala Chana (Bengal Gram)",
+    "slug": "desi-brown-kala-chana-bengal-gram",
+    "category_id": "cat-pulses",
+    "category_name": "Pulses & Legumes",
+    "subcategory": "Chickpeas",
+    "description": "Small-sized, nutrient-dense brown chickpeas ideal for sprouting, morning fitness snacks, and traditional curry.",
+    "benefits": [
+      "Superfood for Sprouting",
+      "High Soluble Fiber",
+      "Sustained Energy Release"
+    ],
+    "nutrition": {
+      "calories": "360 kcal/100g",
+      "protein": "20.5g",
+      "carbs": "60g",
+      "fats": "5.3g"
+    },
+    "specifications": {
+      "Origin": "Haryana",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 85,
+    "original_price": 105,
+    "discount": 19,
+    "unit": "kg",
+    "stock_qty": 140,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Desi Chana"
+    ],
+    "tags": [
+      "chana",
+      "kalachana",
+      "pulses"
+    ],
+    "rating_avg": 4.82,
+    "rating_count": 65,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-dy-1",
+    "farmer_id": "f-4",
+    "farmer_name": "Devendra Joshi",
+    "farm_name": "Gir Gaushala Naturals",
+    "farmer_location": "Junagadh, Gujarat",
+    "title": "Pure Hand-Churned Bilona A2 Desi Cow Ghee",
+    "slug": "pure-hand-churned-bilona-a2-desi-cow-ghee",
+    "category_id": "cat-dairy",
+    "category_name": "Dairy & Milk Products",
+    "subcategory": "Traditional Dairy",
+    "description": "Prepared from fermented whole curd of indigenous free-grazing Gir cows using traditional wooden bilona churning. Golden, aromatic, and rich in butyric acid.",
+    "benefits": [
+      "Traditional Vedic Bilona Method",
+      "100% Pure Gir Cow A2 Milk",
+      "Danedar Golden Texture",
+      "Rich in Fat-Soluble Vitamins A, D, E, K"
+    ],
+    "nutrition": {
+      "calories": "897 kcal/100g",
+      "protein": "0g",
+      "carbs": "0g",
+      "fats": "99.7g"
+    },
+    "specifications": {
+      "Origin": "Gir Forest, Gujarat",
+      "Process": "Clay Pot Bi-directional Churning",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 950,
+    "original_price": 1200,
+    "discount": 21,
+    "unit": "1kg jar",
+    "stock_qty": 60,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "A2 Bilona",
+      "Vedic Churned"
+    ],
+    "tags": [
+      "ghee",
+      "a2ghee",
+      "dairy",
+      "organic"
+    ],
+    "rating_avg": 4.98,
+    "rating_count": 160,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-dy-2",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Farm Fresh Pure Cow Milk",
+    "slug": "farm-fresh-pure-cow-milk",
+    "category_id": "cat-dairy",
+    "category_name": "Dairy & Milk Products",
+    "subcategory": "Milk",
+    "description": "Freshly milked raw cow milk from well-tended cows fed on fresh green fodder and mustard cake in Karnal. Zero adulteration.",
+    "benefits": [
+      "Raw Unprocessed Purity",
+      "Delivered within 4 Hours of Milking",
+      "Zero Preservatives"
+    ],
+    "nutrition": {
+      "calories": "62 kcal/100ml",
+      "protein": "3.2g",
+      "carbs": "4.8g",
+      "fats": "3.6g"
+    },
+    "specifications": {
+      "Origin": "Karnal, Haryana",
+      "Packaging": "Glass Bottle",
+      "Shelf Life": "2 Days (Chilled)"
+    },
+    "shelf_life": "2 Days (Chilled)",
+    "images": [
+      "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 65,
+    "original_price": 75,
+    "discount": 13,
+    "unit": "litre",
+    "stock_qty": 80,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Karnal Dairy Fresh"
+    ],
+    "tags": [
+      "milk",
+      "cowmilk",
+      "dairy"
+    ],
+    "rating_avg": 4.92,
+    "rating_count": 105,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-dy-3",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Rich Creamy Desi Buffalo Milk",
+    "slug": "rich-creamy-desi-buffalo-milk",
+    "category_id": "cat-dairy",
+    "category_name": "Dairy & Milk Products",
+    "subcategory": "Milk",
+    "description": "Thick, high-fat buffalo milk from Murrah buffaloes of Haryana. Yields rich malai and thick curd.",
+    "benefits": [
+      "7.5%+ Natural Milk Fat",
+      "Rich in Calcium & Casein",
+      "Ideal for Thick Kheer & Malai"
+    ],
+    "nutrition": {
+      "calories": "97 kcal/100ml",
+      "protein": "3.8g",
+      "carbs": "5.2g",
+      "fats": "7.5g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Breed": "Murrah Buffalo",
+      "Shelf Life": "2 Days (Chilled)"
+    },
+    "shelf_life": "2 Days (Chilled)",
+    "images": [
+      "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 75,
+    "original_price": 85,
+    "discount": 12,
+    "unit": "litre",
+    "stock_qty": 70,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Murrah Buffalo",
+      "Haryana Special"
+    ],
+    "tags": [
+      "milk",
+      "buffalomilk",
+      "dairy"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 90,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-dy-4",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Fresh Soft Malai Paneer",
+    "slug": "fresh-soft-malai-paneer",
+    "category_id": "cat-dairy",
+    "category_name": "Dairy & Milk Products",
+    "subcategory": "Traditional Dairy",
+    "description": "Crafted fresh every morning from whole cow milk curdled with natural lemon. Soft, velvety, and high in protein.",
+    "benefits": [
+      "Zero Starch or Synthetic Fat",
+      "Soft & Melt-in-Mouth",
+      "18g Protein per 100g"
+    ],
+    "nutrition": {
+      "calories": "265 kcal/100g",
+      "protein": "18.3g",
+      "carbs": "1.2g",
+      "fats": "20.8g"
+    },
+    "specifications": {
+      "Origin": "Karnal, Haryana",
+      "Shelf Life": "4 Days (Chilled)"
+    },
+    "shelf_life": "4 Days (Chilled)",
+    "images": [
+      "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 120,
+    "original_price": 140,
+    "discount": 14,
+    "unit": "250g",
+    "stock_qty": 90,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Fresh Malai Paneer"
+    ],
+    "tags": [
+      "paneer",
+      "dairy"
+    ],
+    "rating_avg": 4.94,
+    "rating_count": 98,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-sp-1",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Pampore, Kashmir",
+    "title": "Pure Kashmiri Mongra Saffron (Grade A1 Kesar)",
+    "slug": "pure-kashmiri-mongra-saffron-grade-a1-kesar",
+    "category_id": "cat-spices",
+    "category_name": "Spices & Condiments",
+    "subcategory": "Premium Spices",
+    "description": "100% authentic GI-tagged Pampore Mongra saffron stigmas. Deep crimson threads with high natural crocin delivering exquisite aroma and royal color.",
+    "benefits": [
+      "100% Hand-Harvested Mongra Stigmas",
+      "GI Protected Pampore Kashmir Heritage",
+      "High Crocin & Safranal Content"
+    ],
+    "nutrition": {
+      "calories": "310 kcal/100g",
+      "protein": "11.4g",
+      "carbs": "65.4g",
+      "fats": "5.8g"
+    },
+    "specifications": {
+      "Origin": "Pampore, Kashmir",
+      "Grade": "Mongra Grade A1",
+      "Shelf Life": "36 Months"
+    },
+    "shelf_life": "36 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 490,
+    "original_price": 620,
+    "discount": 21,
+    "unit": "1g box",
+    "stock_qty": 150,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "GI Tagged",
+      "Pure Mongra"
+    ],
+    "tags": [
+      "saffron",
+      "kesar",
+      "kashmir",
+      "spices"
+    ],
+    "rating_avg": 5.0,
+    "rating_count": 240,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-sp-2",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Meghalaya",
+    "title": "Pure Meghalaya Lakadong Haldi (Turmeric Powder)",
+    "slug": "pure-meghalaya-lakadong-haldi-turmeric-powder",
+    "category_id": "cat-spices",
+    "category_name": "Spices & Condiments",
+    "subcategory": "Organic Spices",
+    "description": "World-renowned Lakadong turmeric containing extraordinary 7% to 9% natural curcumin. Earthy fragrance and deep golden orange color.",
+    "benefits": [
+      "7%+ Natural Curcumin Level",
+      "Zero Lead Chromate or Fillers",
+      "Unmatched Medicinal Anti-Inflammatory Value"
+    ],
+    "nutrition": {
+      "calories": "354 kcal/100g",
+      "protein": "7.8g",
+      "carbs": "65g",
+      "fats": "9.9g"
+    },
+    "specifications": {
+      "Origin": "Jaintia Hills, Meghalaya",
+      "Curcumin": "7.8%",
+      "Shelf Life": "18 Months"
+    },
+    "shelf_life": "18 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 120,
+    "original_price": 150,
+    "discount": 20,
+    "unit": "250g",
+    "stock_qty": 120,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "7%+ Curcumin",
+      "Lakadong"
+    ],
+    "tags": [
+      "turmeric",
+      "haldi",
+      "spices"
+    ],
+    "rating_avg": 4.95,
+    "rating_count": 135,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-sp-3",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Wayanad, Kerala",
+    "title": "Malabar Tellicherry Black Pepper (Kali Mirch)",
+    "slug": "malabar-tellicherry-black-pepper-kali-mirch",
+    "category_id": "cat-spices",
+    "category_name": "Spices & Condiments",
+    "subcategory": "Whole Spices",
+    "description": "Sun-ripened bold black peppercorns from Malabar Coast with intense biting heat and complex woody aroma.",
+    "benefits": [
+      "TGSEB Bold Grade Berries",
+      "High Piperine Heat",
+      "Sun-Dried Naturally"
+    ],
+    "nutrition": {
+      "calories": "251 kcal/100g",
+      "protein": "10.4g",
+      "carbs": "64g",
+      "fats": "3.3g"
+    },
+    "specifications": {
+      "Origin": "Wayanad, Kerala",
+      "Shelf Life": "24 Months"
+    },
+    "shelf_life": "24 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 140,
+    "original_price": 175,
+    "discount": 20,
+    "unit": "100g",
+    "stock_qty": 100,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Tellicherry Bold"
+    ],
+    "tags": [
+      "blackpepper",
+      "kalimirch",
+      "spices"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 82,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-oil-1",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Cold-Pressed Kachi Ghani Mustard Oil (Sarson Tel)",
+    "slug": "cold-pressed-kachi-ghani-mustard-oil-sarson-tel",
+    "category_id": "cat-oils",
+    "category_name": "Oilseeds & Edible Oils",
+    "subcategory": "Edible Oils",
+    "description": "Extracted at low temperature from black mustard seeds in traditional wooden Kohlu. Unrefined, pungent aroma, rich in Omega-3.",
+    "benefits": [
+      "Cold Pressed in Wooden Kohlu",
+      "Natural Pungency & High Smoke Point",
+      "Unrefined & Chemical-Free"
+    ],
+    "nutrition": {
+      "calories": "884 kcal/100ml",
+      "protein": "0g",
+      "carbs": "0g",
+      "fats": "100g"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Process": "Wood Pressed Cold Ghani",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 185,
+    "original_price": 230,
+    "discount": 20,
+    "unit": "1 litre",
+    "stock_qty": 130,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Kachi Ghani",
+      "Wooden Cold Pressed"
+    ],
+    "tags": [
+      "mustardoil",
+      "sarson",
+      "oils",
+      "haryana"
+    ],
+    "rating_avg": 4.92,
+    "rating_count": 118,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-oil-2",
+    "farmer_id": "f-4",
+    "farmer_name": "Devendra Joshi",
+    "farm_name": "Gir Gaushala Naturals",
+    "farmer_location": "Saurashtra, Gujarat",
+    "title": "Wood-Pressed Groundnut Oil (Peanut Oil)",
+    "slug": "wood-pressed-groundnut-oil-peanut-oil",
+    "category_id": "cat-oils",
+    "category_name": "Oilseeds & Edible Oils",
+    "subcategory": "Edible Oils",
+    "description": "Unrefined golden groundnut oil made from Saurashtra bold peanuts. Sweet nutty aroma, heart-friendly MUFA fats.",
+    "benefits": [
+      "Cold Wood-Pressed Extraction",
+      "Heart Healthy MUFA Rich",
+      "Zero Solvent Extraction"
+    ],
+    "nutrition": {
+      "calories": "884 kcal/100ml",
+      "protein": "0g",
+      "carbs": "0g",
+      "fats": "100g"
+    },
+    "specifications": {
+      "Origin": "Saurashtra, Gujarat",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 220,
+    "original_price": 270,
+    "discount": 19,
+    "unit": "1 litre",
+    "stock_qty": 90,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Wood Pressed"
+    ],
+    "tags": [
+      "groundnutoil",
+      "peanutoil",
+      "oils"
+    ],
+    "rating_avg": 4.86,
+    "rating_count": 75,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-df-1",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Kashmir",
+    "title": "Kashmiri Giri Mamra Almonds (Badam)",
+    "slug": "kashmiri-giri-mamra-almonds-badam",
+    "category_id": "cat-dry-fruits",
+    "category_name": "Dry Fruits & Nuts",
+    "subcategory": "Nuts",
+    "description": "Concave shaped authentic Kashmiri Mamra almonds containing over 50% natural almond oil. Unpasteurized and non-GMO.",
+    "benefits": [
+      "50%+ Natural Almond Oil",
+      "Unpasteurized Pure Giri",
+      "Enhances Memory & Brain Energy"
+    ],
+    "nutrition": {
+      "calories": "579 kcal/100g",
+      "protein": "21.2g",
+      "carbs": "21.6g",
+      "fats": "49.9g"
+    },
+    "specifications": {
+      "Origin": "Kashmir Valley",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1508061252445-5350f3ab0a55?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 450,
+    "original_price": 550,
+    "discount": 18,
+    "unit": "250g",
+    "stock_qty": 80,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Kashmiri Mamra"
+    ],
+    "tags": [
+      "almonds",
+      "badam",
+      "dryfruits"
+    ],
+    "rating_avg": 4.96,
+    "rating_count": 125,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-df-2",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Kashmir",
+    "title": "Kashmiri Snow-White Akhrot Giri (Walnuts)",
+    "slug": "kashmiri-snow-white-akhrot-giri-walnuts",
+    "category_id": "cat-dry-fruits",
+    "category_name": "Dry Fruits & Nuts",
+    "subcategory": "Nuts",
+    "description": "Fresh, light-amber walnut halves from organic orchards of Kashmir. Supreme source of plant-based Omega-3 ALA.",
+    "benefits": [
+      "High Plant Omega-3 (ALA)",
+      "Zero Bitter Aftertaste",
+      "Hand-Cracked Halves"
+    ],
+    "nutrition": {
+      "calories": "654 kcal/100g",
+      "protein": "15.2g",
+      "carbs": "13.7g",
+      "fats": "65.2g"
+    },
+    "specifications": {
+      "Origin": "Kashmir Valley",
+      "Shelf Life": "9 Months"
+    },
+    "shelf_life": "9 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 380,
+    "original_price": 475,
+    "discount": 20,
+    "unit": "250g",
+    "stock_qty": 95,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Kashmir Walnuts"
+    ],
+    "tags": [
+      "walnut",
+      "akhrot",
+      "dryfruits"
+    ],
+    "rating_avg": 4.91,
+    "rating_count": 88,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-df-3",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Bihar",
+    "title": "Bihar Jumbo Phool Makhana (Fox Nuts)",
+    "slug": "bihar-jumbo-phool-makhana-fox-nuts",
+    "category_id": "cat-dry-fruits",
+    "category_name": "Dry Fruits & Nuts",
+    "subcategory": "Dry Fruits",
+    "description": "Super crispy 6-suta grade fox nuts hand-popped from fresh lotus seed ponds in Darbhanga, Bihar.",
+    "benefits": [
+      "Low Calorie High Protein Snack",
+      "Gluten-Free & Rich in Magnesium",
+      "GI Protected Mithila Region"
+    ],
+    "nutrition": {
+      "calories": "347 kcal/100g",
+      "protein": "9.7g",
+      "carbs": "76g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Mithila, Bihar",
+      "Grade": "6 Suta Hand-Popped",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 220,
+    "original_price": 280,
+    "discount": 21,
+    "unit": "250g",
+    "stock_qty": 110,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Mithila Makhana"
+    ],
+    "tags": [
+      "makhana",
+      "foxnuts",
+      "dryfruits"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 92,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-sd-1",
+    "farmer_id": "f-6",
+    "farmer_name": "Baldev Singh Dhillon",
+    "farm_name": "Karnal Basmati Heritage Farms",
+    "farmer_location": "Karnal, Haryana",
+    "title": "Certified Sharbati Wheat Seeds (HD-2967)",
+    "slug": "certified-sharbati-wheat-seeds-hd-2967",
+    "category_id": "cat-seeds",
+    "category_name": "Seeds",
+    "subcategory": "Crop Seeds",
+    "description": "Certified breeder seed stock of HD-2967 with 98%+ germination rate and high resistance to yellow rust.",
+    "benefits": [
+      "98%+ Certified Germination",
+      "Yellow Rust Disease Resistant",
+      "Government Certified Breeder Quality"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Origin": "Karnal, Haryana",
+      "Germination": "98%",
+      "Shelf Life": "18 Months"
+    },
+    "shelf_life": "18 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 450,
+    "original_price": 520,
+    "discount": 13,
+    "unit": "10kg bag",
+    "stock_qty": 100,
+    "is_organic": false,
+    "is_seasonal": true,
+    "is_featured": true,
+    "badges": [
+      "Certified Seeds",
+      "HD-2967"
+    ],
+    "tags": [
+      "seeds",
+      "wheatseeds",
+      "haryana"
+    ],
+    "rating_avg": 4.9,
+    "rating_count": 64,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-sd-2",
+    "farmer_id": "f-1",
+    "farmer_name": "Rajesh Patel",
+    "farm_name": "Patel Organic Farms",
+    "farmer_location": "Maharashtra",
+    "title": "F1 Hybrid Abhinav Tomato Seeds",
+    "slug": "f1-hybrid-abhinav-tomato-seeds",
+    "category_id": "cat-seeds",
+    "category_name": "Seeds",
+    "subcategory": "Vegetable Seeds",
+    "description": "High-yielding determinate tomato seeds producing uniform firm fruits with excellent transport tolerance.",
+    "benefits": [
+      "High Disease Resistance (TLCV)",
+      "Firm Red Fruit Output",
+      "Ideal for All Seasons"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Origin": "Maharashtra",
+      "Seeds Count": "~3500 seeds",
+      "Shelf Life": "24 Months"
+    },
+    "shelf_life": "24 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 220,
+    "original_price": 260,
+    "discount": 15,
+    "unit": "10g pkt",
+    "stock_qty": 80,
+    "is_organic": false,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "F1 Hybrid"
+    ],
+    "tags": [
+      "seeds",
+      "tomatoseeds"
+    ],
+    "rating_avg": 4.82,
+    "rating_count": 38,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-ft-1",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "100% Pure Earthworm Vermicompost (Kechua Khaad)",
+    "slug": "100-pure-earthworm-vermicompost-kechua-khaad",
+    "category_id": "cat-fertilizers",
+    "category_name": "Fertilizers & Manure",
+    "subcategory": "Organic Fertilizers",
+    "description": "Nutrient-packed organic black gold created by Australian red worms (Eisenia Fetida) feeding on cow dung and neem leaves. Restores soil biology.",
+    "benefits": [
+      "Rich in Beneficial Microbes & Enzymes",
+      "Enhances Soil Moisture Holding by 40%",
+      "Zero Weed Seeds or Odor"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Moisture": "20-25%",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 240,
+    "original_price": 300,
+    "discount": 20,
+    "unit": "25kg bag",
+    "stock_qty": 200,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "100% Organic",
+      "Soil Healer"
+    ],
+    "tags": [
+      "vermicompost",
+      "fertilizer",
+      "organic",
+      "haryana"
+    ],
+    "rating_avg": 4.95,
+    "rating_count": 120,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-ft-2",
+    "farmer_id": "f-4",
+    "farmer_name": "Devendra Joshi",
+    "farm_name": "Gir Gaushala Naturals",
+    "farmer_location": "Gujarat",
+    "title": "Cold-Pressed Organic Neem Cake Fertilizer",
+    "slug": "cold-pressed-organic-neem-cake-fertilizer",
+    "category_id": "cat-fertilizers",
+    "category_name": "Fertilizers & Manure",
+    "subcategory": "Organic Fertilizers",
+    "description": "Natural soil bio-fertilizer and nematicide that protects plant roots against termites and root grubs while releasing nitrogen.",
+    "benefits": [
+      "Protects Roots from Termites & Nematodes",
+      "Slow Release Natural Nitrogen",
+      "Organic NPOP Certified"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Origin": "Gujarat",
+      "NPK Ratio": "5:1:2",
+      "Shelf Life": "18 Months"
+    },
+    "shelf_life": "18 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 320,
+    "original_price": 390,
+    "discount": 18,
+    "unit": "10kg bag",
+    "stock_qty": 120,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Neem Cake"
+    ],
+    "tags": [
+      "fertilizer",
+      "neem",
+      "organic"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 71,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-eq-1",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Punjab",
+    "title": "Heavy Duty Forged Steel Spade (Phawra / Kudal)",
+    "slug": "heavy-duty-forged-steel-spade-phawra-kudal",
+    "category_id": "cat-equipment",
+    "category_name": "Agricultural Tools & Equipment",
+    "subcategory": "Hand Tools",
+    "description": "Forged high-carbon steel spade blade with seasoned hardwood handle for deep furrowing, soil preparation, and irrigation trenches.",
+    "benefits": [
+      "Forged High-Carbon Steel",
+      "Seasoned Hardwood Handle",
+      "Rust-Resistant Black Coating"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Weight": "2.4 kg",
+      "Material": "High-Carbon Steel",
+      "Warranty": "2 Years"
+    },
+    "shelf_life": "Lifetime Tool",
+    "images": [
+      "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 450,
+    "original_price": 550,
+    "discount": 18,
+    "unit": "piece",
+    "stock_qty": 60,
+    "is_organic": false,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Forged Steel",
+      "Heavy Duty"
+    ],
+    "tags": [
+      "tools",
+      "spade",
+      "equipment"
+    ],
+    "rating_avg": 4.86,
+    "rating_count": 52,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-eq-2",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "16-Litre Manual Knapsack Agriculture Sprayer",
+    "slug": "16-litre-manual-knapsack-agriculture-sprayer",
+    "category_id": "cat-equipment",
+    "category_name": "Agricultural Tools & Equipment",
+    "subcategory": "Sprayers",
+    "description": "Ergonomic backpack chemical-resistant sprayer with brass lance and triple nozzle set for uniform foliar crop spraying.",
+    "benefits": [
+      "16 Litre UV-Protected Tank",
+      "Durable Brass Lance & Nozzles",
+      "Smooth Pressure Chamber"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Capacity": "16 Litres",
+      "Pressure": "0.2 - 0.4 Mpa",
+      "Warranty": "1 Year"
+    },
+    "shelf_life": "Durable",
+    "images": [
+      "https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 1150,
+    "original_price": 1400,
+    "discount": 18,
+    "unit": "piece",
+    "stock_qty": 45,
+    "is_organic": false,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Agro Sprayer"
+    ],
+    "tags": [
+      "sprayer",
+      "equipment"
+    ],
+    "rating_avg": 4.79,
+    "rating_count": 44,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pl-1",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "Sacred Rama Tulsi Medicinal Plant in Pot",
+    "slug": "sacred-rama-tulsi-medicinal-plant-in-pot",
+    "category_id": "cat-plants",
+    "category_name": "Flowers & Plants",
+    "subcategory": "Medicinal Plants",
+    "description": "Authentic Rama Tulsi sapling grown in vermicompost blend. Revered for daily herbal tea, respiratory support, and home positive energy.",
+    "benefits": [
+      "Ayurvedic Adaptogen Herb",
+      "Repels Mosquitoes Naturally",
+      "Rooted in Organic Soil Pot"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Plant Height": "10-12 inches",
+      "Pot Size": "6 inch pot",
+      "Care": "Daily sunlight"
+    },
+    "shelf_life": "Live Plant",
+    "images": [
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 65,
+    "original_price": 85,
+    "discount": 24,
+    "unit": "plant",
+    "stock_qty": 100,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Sacred Tulsi"
+    ],
+    "tags": [
+      "tulsi",
+      "plants",
+      "ayurveda"
+    ],
+    "rating_avg": 4.95,
+    "rating_count": 96,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-pl-2",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Haryana",
+    "title": "Fragrant Red Desi Rose (Gulab) Bush",
+    "slug": "fragrant-red-desi-rose-gulab-bush",
+    "category_id": "cat-plants",
+    "category_name": "Flowers & Plants",
+    "subcategory": "Flowering Plants",
+    "description": "Ever-blooming Indian country rose plant known for intoxicating sweet scent, gulkand making, and pure rose water distillation.",
+    "benefits": [
+      "Intense Natural Sweet Fragrance",
+      "Continuous Flowering",
+      "Hardy Indian Rootstock"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "N/A",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Plant Height": "12-14 inches",
+      "Pot Size": "7 inch nursery bag"
+    },
+    "shelf_life": "Live Plant",
+    "images": [
+      "https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 95,
+    "original_price": 120,
+    "discount": 21,
+    "unit": "plant",
+    "stock_qty": 80,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Desi Gulab"
+    ],
+    "tags": [
+      "rose",
+      "flowers",
+      "plants"
+    ],
+    "rating_avg": 4.88,
+    "rating_count": 54,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-ot-1",
+    "farmer_id": "f-2",
+    "farmer_name": "Abdul Rashid Mir",
+    "farm_name": "Kashmir Valley Organics",
+    "farmer_location": "Himalayas, Uttarakhand",
+    "title": "100% Raw Wild Forest Multi-Flora Honey",
+    "slug": "100-raw-wild-forest-multi-flora-honey",
+    "category_id": "cat-other",
+    "category_name": "Other Agricultural Products",
+    "subcategory": "Honey & Sweeteners",
+    "description": "Unpasteurized, unprocessed raw honey collected by tribal beekeepers from mountain flora. Retains active bee pollen and enzymes.",
+    "benefits": [
+      "Unpasteurized & Cold-Extracted",
+      "Contains Active Bee Pollen",
+      "Zero Added Sugar Syrup or Adulteration"
+    ],
+    "nutrition": {
+      "calories": "304 kcal/100g",
+      "protein": "0.3g",
+      "carbs": "82.4g",
+      "fats": "0g"
+    },
+    "specifications": {
+      "Origin": "Garhwal Himalayas",
+      "Shelf Life": "24 Months"
+    },
+    "shelf_life": "24 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 380,
+    "original_price": 475,
+    "discount": 20,
+    "unit": "500g jar",
+    "stock_qty": 85,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Wild Forest Honey"
+    ],
+    "tags": [
+      "honey",
+      "rawhoney",
+      "organic"
+    ],
+    "rating_avg": 4.97,
+    "rating_count": 142,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-ot-2",
+    "farmer_id": "f-3",
+    "farmer_name": "Gurpreet Singh",
+    "farm_name": "Punjab Bio Fields",
+    "farmer_location": "Muzaffarnagar, UP",
+    "title": "Organic Chemical-Free Desi Gur (Jaggery Cubes)",
+    "slug": "organic-chemical-free-desi-gur-jaggery-cubes",
+    "category_id": "cat-other",
+    "category_name": "Other Agricultural Products",
+    "subcategory": "Honey & Sweeteners",
+    "description": "Made by boiling fresh organic sugarcane juice with wild ladyfinger bark extract as natural clarifier. Zero sodium hydrosulphite.",
+    "benefits": [
+      "Zero Chemical Bleach",
+      "Natural Iron & Mineral Rich",
+      "Purifies Blood & Aids Digestion"
+    ],
+    "nutrition": {
+      "calories": "383 kcal/100g",
+      "protein": "0.4g",
+      "carbs": "98g",
+      "fats": "0.1g"
+    },
+    "specifications": {
+      "Origin": "Muzaffarnagar, UP",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1607672632458-9eb56696346b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 75,
+    "original_price": 95,
+    "discount": 21,
+    "unit": "1kg",
+    "stock_qty": 150,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": true,
+    "badges": [
+      "Desi Gur"
+    ],
+    "tags": [
+      "jaggery",
+      "gur",
+      "natural"
+    ],
+    "rating_avg": 4.92,
+    "rating_count": 108,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "p-ot-3",
+    "farmer_id": "f-5",
+    "farmer_name": "Suresh Verma",
+    "farm_name": "Panipat Kisan Bio-Farms",
+    "farmer_location": "Panipat, Haryana",
+    "title": "Clean Wheat Straw / Turi Animal Feed Fodder",
+    "slug": "clean-wheat-straw-turi-animal-feed-fodder",
+    "category_id": "cat-other",
+    "category_name": "Other Agricultural Products",
+    "subcategory": "Animal Feed & Fodder",
+    "description": "Dry machine-cut golden wheat straw (Turi) from Haryana fields. Clean, dust-filtered, and highly nutritious dry fodder for dairy cattle.",
+    "benefits": [
+      "Dust-Free Screened Straw",
+      "Essential Roughage for Ruminants",
+      "Direct from Panipat Mandi"
+    ],
+    "nutrition": {
+      "calories": "N/A",
+      "protein": "4.2%",
+      "carbs": "N/A",
+      "fats": "N/A"
+    },
+    "specifications": {
+      "Origin": "Panipat, Haryana",
+      "Moisture": "<12%",
+      "Shelf Life": "12 Months"
+    },
+    "shelf_life": "12 Months",
+    "images": [
+      "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=800"
+    ],
+    "price": 450,
+    "original_price": 550,
+    "discount": 18,
+    "unit": "quintal",
+    "stock_qty": 60,
+    "is_organic": true,
+    "is_seasonal": false,
+    "is_featured": false,
+    "badges": [
+      "Panipat Mandi",
+      "Dry Fodder"
+    ],
+    "tags": [
+      "fodder",
+      "turi",
+      "cattlefeed",
+      "haryana"
+    ],
+    "rating_avg": 4.85,
+    "rating_count": 34,
+    "status": "active",
+    "created_at": "2026-03-01T10:00:00Z"
+  }
 ];
 
 const INITIAL_ORDERS: Order[] = [
@@ -826,19 +3279,19 @@ const INITIAL_ORDERS: Order[] = [
     user_id: 'c-1',
     items: [
       {
-        product_id: 'p-veg-1',
-        title: 'Farm Fresh Organic Tomatoes',
+        product_id: 'p-vg-1',
+        title: 'Farm Fresh Organic Tomatoes (Desi Tamatar)',
         price: 45,
         qty: 2,
         unit: 'kg',
         image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
       },
       {
-        product_id: 'p-dairy-3',
-        title: 'Traditional Vedic Bilona A2 Cow Ghee',
+        product_id: 'p-dy-2',
+        title: 'Traditional Vedic Bilona A2 Desi Gir Cow Ghee',
         price: 1450,
         qty: 1,
-        unit: '500ml jar',
+        unit: '500ml',
         image: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&q=80&w=800',
       },
     ],
@@ -865,15 +3318,15 @@ const INITIAL_ORDERS: Order[] = [
     user_id: 'c-1',
     items: [
       {
-        product_id: 'p-spice-1',
-        title: 'Pure Kashmiri Mongra Saffron (Grade A1)',
+        product_id: 'p-sp-1',
+        title: 'Pure Kashmiri Mongra Saffron (Grade A1 Kesar)',
         price: 490,
         qty: 1,
         unit: '1g box',
         image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&q=80&w=800',
       },
       {
-        product_id: 'p-fruit-1',
+        product_id: 'p-fr-2',
         title: 'Kashmiri Royal Delicious Red Apples',
         price: 180,
         qty: 2,
@@ -889,88 +3342,10 @@ const INITIAL_ORDERS: Order[] = [
       pincode: '411001',
     },
     subtotal: 850,
-    gst: 42.5,
+    gst: 42,
     delivery_fee: 40,
     discount: 0,
-    total: 932.5,
-    payment_status: 'paid',
-    order_status: 'placed',
-    payment_method: 'razorpay',
-    created_at: '2026-03-24T08:30:00Z',
-  },
-  {
-    id: 'ord-103',
-    order_number: 'AGRO-2026-1003',
-    user_id: 'c-2',
-    items: [
-      {
-        product_id: 'p-grain-1',
-        title: 'Royal Himalayan Organic Basmati Rice',
-        price: 195,
-        qty: 2,
-        unit: 'kg',
-        image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=800',
-      },
-      {
-        product_id: 'p-other-1',
-        title: 'Cold Pressed Wood-Churned Mustard Oil',
-        price: 240,
-        qty: 1,
-        unit: '1 Litre bottle',
-        image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=800',
-      },
-    ],
-    address: {
-      label: 'Office',
-      line1: 'Tower B, Cyber Hub, DLF Phase 2',
-      city: 'Gurugram',
-      state: 'Haryana',
-      pincode: '122002',
-    },
-    subtotal: 630,
-    gst: 31.5,
-    delivery_fee: 40,
-    discount: 0,
-    total: 701.5,
-    payment_status: 'pending_cod',
-    order_status: 'packed',
-    payment_method: 'cod',
-    created_at: '2026-03-23T14:45:00Z',
-  },
-  {
-    id: 'ord-104',
-    order_number: 'AGRO-2026-1004',
-    user_id: 'c-3',
-    items: [
-      {
-        product_id: 'p-dairy-1',
-        title: 'Pure A2 Gir Cow Fresh Raw Milk',
-        price: 85,
-        qty: 4,
-        unit: 'litre',
-        image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800',
-      },
-      {
-        product_id: 'p-dairy-2',
-        title: 'Handcrafted Desi Cow Milk Paneer',
-        price: 130,
-        qty: 2,
-        unit: '200g pack',
-        image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800',
-      },
-    ],
-    address: {
-      label: 'Home',
-      line1: '12 Park Street, Near South City',
-      city: 'Kolkata',
-      state: 'West Bengal',
-      pincode: '700016',
-    },
-    subtotal: 600,
-    gst: 30,
-    delivery_fee: 0,
-    discount: 30,
-    total: 600,
+    total: 932,
     payment_status: 'paid',
     order_status: 'delivered',
     payment_method: 'razorpay',
@@ -984,8 +3359,8 @@ interface AgroState {
   farmers: FarmerProfile[];
   customers: CustomerProfile[];
   orders: Order[];
-  wishlist: Record<string, string[]>; // userId -> productIds[]
-  addresses: Record<string, Address[]>; // userId -> addresses
+  wishlist: Record<string, string[]>;
+  addresses: Record<string, Address[]>;
 }
 
 let memoryState: AgroState | null = null;
@@ -1011,7 +3386,7 @@ function loadState(): AgroState {
     customers: INITIAL_CUSTOMERS,
     orders: INITIAL_ORDERS,
     wishlist: {
-      'c-1': ['p-spice-1', 'p-dairy-3', 'p-fruit-1'],
+      'c-1': ['p-sp-1', 'p-dy-2', 'p-fr-1'],
     },
     addresses: {
       'c-1': [
@@ -1056,6 +3431,8 @@ export const DataService = {
   // PRODUCTS
   getProducts(filters?: {
     category?: string;
+    subcategory?: string;
+    location?: string;
     search?: string;
     isOrganic?: boolean;
     maxPrice?: number;
@@ -1072,17 +3449,34 @@ export const DataService = {
 
     if (filters?.category) {
       const slug = filters.category.toLowerCase();
-      // Match category slug or id or grains/seeds aliases
-      if (slug === 'seeds-grains' || slug === 'grains-seeds') {
+      if (slug === 'organic') {
+        res = res.filter((p) => p.is_organic);
+      } else if (slug === 'other-agriculture' || slug === 'organic-farming') {
+        res = res.filter((p) => p.category_id === 'cat-other');
+      } else if (slug === 'seeds-grains' || slug === 'grains-seeds') {
         res = res.filter((p) => p.category_id === 'cat-grains' || p.category_id === 'cat-seeds');
       } else {
         const cat = state.categories.find((c) => c.slug === slug || c.id === slug);
         if (cat) {
           res = res.filter((p) => p.category_id === cat.id);
         } else {
-          res = res.filter((p) => p.category_name?.toLowerCase().includes(slug));
+          res = res.filter(
+            (p) =>
+              p.category_name?.toLowerCase().includes(slug) ||
+              p.subcategory?.toLowerCase().includes(slug)
+          );
         }
       }
+    }
+
+    if (filters?.subcategory) {
+      const sub = filters.subcategory.toLowerCase();
+      res = res.filter((p) => p.subcategory?.toLowerCase() === sub);
+    }
+
+    if (filters?.location) {
+      const loc = filters.location.toLowerCase();
+      res = res.filter((p) => p.farmer_location?.toLowerCase().includes(loc));
     }
 
     if (filters?.search) {
@@ -1092,7 +3486,11 @@ export const DataService = {
           p.title.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
           p.category_name?.toLowerCase().includes(q) ||
-          p.farm_name?.toLowerCase().includes(q)
+          p.subcategory?.toLowerCase().includes(q) ||
+          p.farmer_name?.toLowerCase().includes(q) ||
+          p.farmer_location?.toLowerCase().includes(q) ||
+          p.farm_name?.toLowerCase().includes(q) ||
+          p.tags?.some((t) => t.toLowerCase().includes(q))
       );
     }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/axios';
 import { Product, Review } from '../types';
@@ -11,6 +11,7 @@ import { ProductCard } from '../components/ProductCard';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { setCart, openCart } = useCartStore();
   const { isAuthenticated } = useAuthStore();
@@ -19,7 +20,7 @@ export const ProductDetailPage: React.FC = () => {
   const [qty, setQty] = useState(1);
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
-  const [activeTab, setActiveTab] = useState<'description' | 'nutrition' | 'reviews'>('description');
+  const [activeTab, setActiveTab] = useState<'description' | 'specifications' | 'nutrition' | 'reviews'>('description');
   const [addedToCart, setAddedToCart] = useState(false);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
 
@@ -60,6 +61,17 @@ export const ProductDetailPage: React.FC = () => {
       openCart();
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
+    },
+  });
+
+  const buyNowMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.post('/cart/items', { product_id: product!.id, qty });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      setCart(data);
+      navigate('/checkout');
     },
   });
 
@@ -118,15 +130,27 @@ export const ProductDetailPage: React.FC = () => {
     'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
   ];
 
+  const discountPercent = product.discount || (
+    product.original_price && product.original_price > product.price
+      ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
+      : 0
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-on-surface-variant">
+      <nav className="flex items-center gap-2 text-xs text-on-surface-variant flex-wrap">
         <Link to="/" className="hover:text-primary transition-colors">Home</Link>
         <span className="material-symbols-outlined text-base">chevron_right</span>
-        <Link to={`/category/${product.category_name?.toLowerCase()}`} className="hover:text-primary transition-colors capitalize">
+        <Link to={`/category/${product.category_id?.replace('cat-', '') || 'vegetables'}`} className="hover:text-primary transition-colors capitalize">
           {product.category_name || 'Products'}
         </Link>
+        {product.subcategory && (
+          <>
+            <span className="material-symbols-outlined text-base">chevron_right</span>
+            <span className="text-on-surface-variant">{product.subcategory}</span>
+          </>
+        )}
         <span className="material-symbols-outlined text-base">chevron_right</span>
         <span className="text-on-surface font-medium line-clamp-1">{product.title}</span>
       </nav>
@@ -142,8 +166,13 @@ export const ProductDetailPage: React.FC = () => {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             {product.is_organic && (
-              <span className="absolute top-5 left-5 bg-secondary-container text-on-secondary-container text-sm font-bold px-4 py-1.5 rounded-full shadow-sm">
-                🌿 100% Organic
+              <span className="absolute top-5 left-5 bg-secondary text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-md flex items-center gap-1">
+                <span>🌿</span> 100% Organic
+              </span>
+            )}
+            {discountPercent > 0 && (
+              <span className="absolute top-5 right-5 bg-amber-500 text-stone-900 text-xs font-black px-3 py-1.5 rounded-full shadow-md">
+                {discountPercent}% OFF
               </span>
             )}
           </div>
@@ -166,51 +195,100 @@ export const ProductDetailPage: React.FC = () => {
 
         {/* Product Info */}
         <div className="space-y-6 lg:py-2">
-          {/* Badges */}
-          <div className="flex flex-wrap gap-2">
+          {/* Badges & Tags */}
+          <div className="flex flex-wrap items-center gap-2">
+            {product.category_name && (
+              <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">
+                {product.category_name}
+              </span>
+            )}
+            {product.subcategory && (
+              <span className="bg-surface-container text-on-surface-variant text-xs font-semibold px-3 py-1 rounded-full border border-outline-variant/30">
+                {product.subcategory}
+              </span>
+            )}
+            {product.is_organic && (
+              <span className="bg-secondary/15 text-secondary text-xs font-bold px-3 py-1 rounded-full border border-secondary/30">
+                ✓ Certified Organic
+              </span>
+            )}
             {product.badges?.map((b) => (
-              <span key={b} className="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full border border-primary/20">
+              <span key={b} className="bg-surface-container-high text-on-surface text-xs font-semibold px-2.5 py-0.5 rounded-full">
                 {b}
               </span>
             ))}
-            {product.is_organic && (
-              <span className="bg-secondary-container text-on-secondary-container text-xs font-semibold px-3 py-1 rounded-full">
-                Certified Organic
-              </span>
-            )}
           </div>
 
-          {/* Title & Farmer */}
+          {/* Title */}
           <div>
-            <div className="flex items-center gap-2 text-sm text-secondary font-semibold mb-2">
-              <span className="material-symbols-outlined text-base">agriculture</span>
-              {product.farm_name || 'Organic Farm'}
-            </div>
             <h1 className="font-poppins font-bold text-3xl xl:text-4xl text-on-surface leading-tight">{product.title}</h1>
+          </div>
+
+          {/* Farmer & Location Info Card */}
+          <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                <span className="material-symbols-outlined text-2xl">agriculture</span>
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">Direct From Farmer</div>
+                <div className="text-sm font-bold text-on-surface">{product.farmer_name || 'Verified Farmer'}</div>
+                <div className="text-xs text-secondary font-semibold">{product.farm_name || 'AgroMart Heritage Farm'}</div>
+              </div>
+            </div>
+            {product.farmer_location && (
+              <div className="text-right shrink-0">
+                <div className="text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">Mandi / Origin</div>
+                <div className="text-xs font-bold text-on-surface flex items-center gap-1 justify-end">
+                  <span className="material-symbols-outlined text-sm text-primary">location_on</span>
+                  {product.farmer_location}
+                </div>
+                {product.shelf_life && (
+                  <div className="text-[11px] text-on-surface-variant mt-0.5">Life: {product.shelf_life}</div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Rating */}
           <div className="flex items-center gap-3">
             <RatingStars rating={product.rating_avg} count={product.rating_count} size="md" />
-            <span className="text-sm text-on-surface-variant">({product.rating_count} reviews)</span>
+            <span className="text-sm text-on-surface-variant font-medium">({product.rating_count} verified reviews)</span>
           </div>
 
-          {/* Price */}
-          <div className="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/30">
-            <div className="flex items-baseline gap-2">
+          {/* Price Box */}
+          <div className="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/30 space-y-2">
+            <div className="flex items-baseline gap-3 flex-wrap">
               <span className="font-poppins font-bold text-4xl text-primary">₹{product.price}</span>
-              <span className="text-on-surface-variant font-medium">/{product.unit}</span>
+              {product.original_price && product.original_price > product.price && (
+                <>
+                  <span className="text-lg text-outline line-through">₹{product.original_price}</span>
+                  <span className="bg-secondary/15 text-secondary text-xs font-bold px-2.5 py-1 rounded-full border border-secondary/30">
+                    {discountPercent}% OFF
+                  </span>
+                </>
+              )}
+              <span className="text-on-surface-variant font-semibold">/{product.unit}</span>
             </div>
-            <div className="mt-2 flex items-center gap-2 text-sm">
+
+            {product.original_price && product.original_price > product.price && (
+              <div className="text-xs text-secondary font-bold">
+                You save ₹{product.original_price - product.price} per {product.unit}!
+              </div>
+            )}
+
+            <div className="pt-2 flex items-center gap-2 text-sm">
               {product.stock_qty > 0 ? (
                 <>
-                  <span className="w-2 h-2 bg-secondary rounded-full inline-block"></span>
-                  <span className="text-secondary font-semibold">In Stock</span>
-                  <span className="text-on-surface-variant">({product.stock_qty} {product.unit} available)</span>
+                  <span className="w-2.5 h-2.5 bg-secondary rounded-full inline-block"></span>
+                  <span className="text-secondary font-semibold">
+                    {product.stock_status || (product.stock_qty <= 10 ? `Only ${product.stock_qty} left in stock` : 'In Stock')}
+                  </span>
+                  <span className="text-on-surface-variant text-xs">({product.stock_qty} {product.unit} available for instant dispatch)</span>
                 </>
               ) : (
                 <>
-                  <span className="w-2 h-2 bg-error rounded-full inline-block"></span>
+                  <span className="w-2.5 h-2.5 bg-error rounded-full inline-block"></span>
                   <span className="text-error font-semibold">Out of Stock</span>
                 </>
               )}
@@ -218,9 +296,9 @@ export const ProductDetailPage: React.FC = () => {
           </div>
 
           {/* Quantity & CTA */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-on-surface">Quantity:</span>
+              <span className="text-sm font-semibold text-on-surface">Quantity ({product.unit}):</span>
               <QuantityPicker
                 value={qty}
                 min={1}
@@ -228,28 +306,40 @@ export const ProductDetailPage: React.FC = () => {
                 onChange={setQty}
               />
             </div>
+            
+            {/* Action Buttons: Add to Cart + Buy Now + Wishlist */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => addToCartMutation.mutate()}
                 disabled={product.stock_qty === 0 || addToCartMutation.isPending}
-                className="flex-1 bg-amber-500 hover:bg-amber-600 active:scale-95 disabled:opacity-50 text-on-surface font-bold py-3.5 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 text-sm"
+                className="flex-1 bg-amber-500 hover:bg-amber-600 active:scale-95 disabled:opacity-50 text-on-surface font-bold py-3.5 px-4 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 text-sm"
               >
                 <span className="material-symbols-outlined text-xl">
                   {addedToCart ? 'check_circle' : 'add_shopping_cart'}
                 </span>
                 {addedToCart ? 'Added to Cart!' : addToCartMutation.isPending ? 'Adding…' : 'Add to Cart'}
               </button>
+
+              <button
+                onClick={() => buyNowMutation.mutate()}
+                disabled={product.stock_qty === 0 || buyNowMutation.isPending}
+                className="flex-1 bg-primary hover:opacity-95 active:scale-95 disabled:opacity-50 text-on-primary font-bold py-3.5 px-4 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 text-sm"
+              >
+                <span className="material-symbols-outlined text-xl">bolt</span>
+                {buyNowMutation.isPending ? 'Processing…' : 'Buy Now'}
+              </button>
+
               {isAuthenticated && (
                 <button
                   onClick={() => addToWishlistMutation.mutate()}
-                  className={`px-5 py-3.5 rounded-2xl border-2 font-semibold text-sm transition-all flex items-center gap-2 ${
+                  className={`px-4 py-3.5 rounded-2xl border-2 font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
                     addedToWishlist
                       ? 'bg-tertiary border-tertiary text-on-tertiary'
                       : 'border-outline-variant/60 hover:border-tertiary text-on-surface-variant hover:text-tertiary'
                   }`}
+                  title="Save to Wishlist"
                 >
                   <span className={`material-symbols-outlined text-xl ${addedToWishlist ? 'fill-1' : ''}`}>favorite</span>
-                  {addedToWishlist ? 'Wishlisted' : 'Wishlist'}
                 </button>
               )}
             </div>
@@ -258,9 +348,9 @@ export const ProductDetailPage: React.FC = () => {
           {/* Trust Badges */}
           <div className="grid grid-cols-3 gap-3 pt-2">
             {[
-              { icon: 'local_shipping', text: 'Free Delivery', sub: 'Orders above ₹499' },
-              { icon: 'verified_user', text: 'Farm Certified', sub: 'Organic certified' },
-              { icon: 'replay', text: 'Easy Returns', sub: '3-day policy' },
+              { icon: 'local_shipping', text: 'Mandi Direct', sub: 'Fast express transit' },
+              { icon: 'verified_user', text: 'Farm Purity', sub: 'Lab & quality tested' },
+              { icon: 'payments', text: 'Fair Farmer Price', sub: 'Direct payout' },
             ].map((b) => (
               <div key={b.text} className="bg-surface-container-low rounded-xl p-3 text-center border border-outline-variant/20">
                 <span className="material-symbols-outlined text-2xl text-primary">{b.icon}</span>
@@ -272,14 +362,14 @@ export const ProductDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tabs: Description / Nutrition / Reviews */}
+      {/* Tabs: Description / Specifications / Nutrition / Reviews */}
       <div className="bg-surface-container-lowest rounded-3xl border border-outline-variant/30 card-elevation-1 overflow-hidden">
-        <div className="flex border-b border-outline-variant/30">
-          {(['description', 'nutrition', 'reviews'] as const).map((tab) => (
+        <div className="flex border-b border-outline-variant/30 overflow-x-auto">
+          {(['description', 'specifications', 'nutrition', 'reviews'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-4 text-sm font-semibold capitalize transition-all ${
+              className={`flex-1 min-w-[120px] py-4 text-sm font-semibold capitalize transition-all whitespace-nowrap ${
                 activeTab === tab
                   ? 'text-primary border-b-2 border-primary bg-primary/5'
                   : 'text-on-surface-variant hover:text-on-surface'
@@ -292,12 +382,13 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         <div className="p-6 sm:p-8">
+          {/* Description Tab */}
           {activeTab === 'description' && (
             <div className="space-y-6">
               <p className="text-on-surface-variant leading-relaxed text-base">{product.description}</p>
               {product.benefits?.length > 0 && (
                 <div>
-                  <h3 className="font-poppins font-semibold text-on-surface mb-3">Key Benefits</h3>
+                  <h3 className="font-poppins font-semibold text-on-surface mb-3">Key Highlights & Benefits</h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {product.benefits.map((b, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-on-surface-variant">
@@ -311,6 +402,38 @@ export const ProductDetailPage: React.FC = () => {
             </div>
           )}
 
+          {/* Specifications Tab */}
+          {activeTab === 'specifications' && (
+            <div className="space-y-4">
+              <h3 className="font-poppins font-semibold text-on-surface">Harvest & Mandi Specifications</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex justify-between items-center text-sm">
+                  <span className="text-on-surface-variant">Origin Region / Mandi</span>
+                  <span className="font-semibold text-on-surface">{product.farmer_location || 'India'}</span>
+                </div>
+                <div className="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex justify-between items-center text-sm">
+                  <span className="text-on-surface-variant">Shelf Life</span>
+                  <span className="font-semibold text-on-surface">{product.shelf_life || 'Optimal fresh consume'}</span>
+                </div>
+                <div className="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex justify-between items-center text-sm">
+                  <span className="text-on-surface-variant">Purity Grade</span>
+                  <span className="font-semibold text-on-surface">{product.is_organic ? '100% Certified Organic' : 'A-Grade Fresh Mandi'}</span>
+                </div>
+                <div className="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex justify-between items-center text-sm">
+                  <span className="text-on-surface-variant">Packaging Unit</span>
+                  <span className="font-semibold text-on-surface">{product.unit}</span>
+                </div>
+                {product.specifications && Object.entries(product.specifications).map(([key, val]) => (
+                  <div key={key} className="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex justify-between items-center text-sm">
+                    <span className="text-on-surface-variant capitalize">{key.replace(/_/g, ' ')}</span>
+                    <span className="font-semibold text-on-surface">{val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Nutrition Tab */}
           {activeTab === 'nutrition' && (
             <div className="space-y-4">
               <h3 className="font-poppins font-semibold text-on-surface">Nutrition Facts (per 100g)</h3>
@@ -325,9 +448,9 @@ export const ProductDetailPage: React.FC = () => {
             </div>
           )}
 
+          {/* Reviews Tab */}
           {activeTab === 'reviews' && (
             <div className="space-y-8">
-              {/* Review list */}
               {reviews && reviews.length > 0 ? (
                 <div className="space-y-5">
                   {reviews.map((r) => (
@@ -342,7 +465,7 @@ export const ProductDetailPage: React.FC = () => {
                           <span className="font-semibold text-sm text-on-surface">{r.user_name}</span>
                           {r.verified_purchase && (
                             <span className="text-[10px] text-secondary bg-secondary-container/50 px-2 py-0.5 rounded-full font-semibold">
-                              ✓ Verified
+                              ✓ Verified Mandi Purchase
                             </span>
                           )}
                         </div>
@@ -355,16 +478,15 @@ export const ProductDetailPage: React.FC = () => {
               ) : (
                 <div className="text-center py-8 text-on-surface-variant">
                   <span className="material-symbols-outlined text-5xl block mb-2 opacity-40">rate_review</span>
-                  <p>No reviews yet. Be the first!</p>
+                  <p>No customer reviews yet. Be the first to review this farm harvest!</p>
                 </div>
               )}
 
               {/* Add review form */}
               {isAuthenticated && (
                 <div className="border-t border-outline-variant/30 pt-6">
-                  <h4 className="font-poppins font-semibold text-on-surface mb-4">Write a Review</h4>
+                  <h4 className="font-poppins font-semibold text-on-surface mb-4">Write a Harvest Review</h4>
                   <div className="space-y-4">
-                    {/* Star selector */}
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -382,14 +504,14 @@ export const ProductDetailPage: React.FC = () => {
                     <textarea
                       value={reviewText}
                       onChange={(e) => setReviewText(e.target.value)}
-                      placeholder="Share your experience with this product…"
+                      placeholder="Share your experience with this harvest freshness and quality…"
                       rows={4}
                       className="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                     />
                     <button
                       onClick={() => submitReviewMutation.mutate()}
                       disabled={!reviewText.trim() || submitReviewMutation.isPending}
-                      className="bg-primary hover:bg-primary-container text-on-primary font-semibold px-6 py-2.5 rounded-xl transition-all disabled:opacity-50 text-sm"
+                      className="bg-primary hover:opacity-90 text-on-primary font-semibold px-6 py-2.5 rounded-xl transition-all disabled:opacity-50 text-sm shadow-sm"
                     >
                       {submitReviewMutation.isPending ? 'Submitting…' : 'Submit Review'}
                     </button>
@@ -404,7 +526,7 @@ export const ProductDetailPage: React.FC = () => {
       {/* Related Products */}
       {related && related.length > 0 && (
         <section className="space-y-6">
-          <h2 className="font-poppins font-bold text-2xl text-on-surface">You May Also Like</h2>
+          <h2 className="font-poppins font-bold text-2xl text-on-surface">Related Harvests in this Category</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />

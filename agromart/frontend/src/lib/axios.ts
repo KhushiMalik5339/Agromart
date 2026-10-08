@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } 
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
 import { DataService } from '../services/dataService';
+import { User } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
@@ -30,6 +31,127 @@ function handleMockFallback(config: AxiosRequestConfig): AxiosResponse | null {
   const method = (config.method || 'get').toLowerCase();
   const currentUser = useAuthStore.getState().user;
   const userId = currentUser?.id || 'c-1';
+
+  // 0. Auth: Login
+  if ((url.endsWith('/auth/login') || url === '/auth/login') && method === 'post') {
+    let body: any = {};
+    try {
+      body = typeof config.data === 'string' ? JSON.parse(config.data) : config.data || {};
+    } catch (e) {
+      body = {};
+    }
+    const email = (body.email || '').toLowerCase().trim();
+    let userObj: User = {
+      id: 'c-1',
+      name: 'Priya Sharma',
+      email: email || 'customer@agromart.com',
+      role: 'customer',
+      phone: '+91 98112 34567',
+      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+    };
+
+    if (email.includes('farmer') || email === 'farmer@agromart.com') {
+      userObj = {
+        id: 'u-farmer-1',
+        name: 'Rajesh Patel',
+        email: email || 'farmer@agromart.com',
+        role: 'farmer' as const,
+        phone: '+91 98251 34920',
+        avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+      };
+    } else if (email.includes('admin') || email === 'admin@agromart.com') {
+      userObj = {
+        id: 'admin-1',
+        name: 'AgroMart Admin',
+        email: email || 'admin@agromart.com',
+        role: 'admin' as const,
+        phone: '+91 99999 99999',
+        avatar_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
+      };
+    }
+
+    return {
+      data: {
+        access_token: 'mock_jwt_access_token_' + Date.now(),
+        refresh_token: 'mock_jwt_refresh_token_' + Date.now(),
+        token_type: 'bearer',
+        user: userObj,
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: config as InternalAxiosRequestConfig,
+    };
+  }
+
+  // 0.1 Auth: Register
+  if ((url.endsWith('/auth/register') || url === '/auth/register') && method === 'post') {
+    let body: any = {};
+    try {
+      body = typeof config.data === 'string' ? JSON.parse(config.data) : config.data || {};
+    } catch (e) {
+      body = {};
+    }
+    const role = (body.role || 'customer') as any;
+    const userObj = {
+      id: 'u-' + Date.now(),
+      name: body.name || 'New AgroMart Member',
+      email: (body.email || 'user@agromart.com').toLowerCase(),
+      role: role,
+      phone: body.phone || '+91 98765 43210',
+      avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${body.name || 'User'}`,
+    };
+
+    return {
+      data: {
+        access_token: 'mock_jwt_access_token_' + Date.now(),
+        refresh_token: 'mock_jwt_refresh_token_' + Date.now(),
+        token_type: 'bearer',
+        user: userObj,
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: config as InternalAxiosRequestConfig,
+    };
+  }
+
+  // 0.2 Auth: Google Sign-in
+  if ((url.endsWith('/auth/google') || url === '/auth/google') && method === 'post') {
+    return {
+      data: {
+        access_token: 'mock_google_token_' + Date.now(),
+        refresh_token: 'mock_google_refresh_' + Date.now(),
+        token_type: 'bearer',
+        user: {
+          id: 'c-google-1',
+          name: 'Priya Sharma (Google Verified)',
+          email: 'customer@agromart.com',
+          role: 'customer' as const,
+          phone: '+91 98112 34567',
+          avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+        },
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: config as InternalAxiosRequestConfig,
+    };
+  }
+
+  // 0.3 Auth: Current User / Me
+  if ((url.endsWith('/auth/me') || url === '/auth/me') && method === 'get') {
+    const current = useAuthStore.getState().user;
+    if (current) {
+      return {
+        data: current,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: config as InternalAxiosRequestConfig,
+      };
+    }
+  }
 
   // 1. Categories
   if (url === '/categories' && method === 'get') {
@@ -87,12 +209,14 @@ function handleMockFallback(config: AxiosRequestConfig): AxiosResponse | null {
     // Filtered query
     const searchParams = new URLSearchParams(url.includes('?') ? url.split('?')[1] : '');
     const category = searchParams.get('category') || undefined;
+    const subcategory = searchParams.get('subcategory') || undefined;
+    const location = searchParams.get('location') || undefined;
     const sort = searchParams.get('sort') || undefined;
     const isOrganic = searchParams.has('is_organic') ? searchParams.get('is_organic') === 'true' : undefined;
     const maxPrice = searchParams.has('max_price') ? Number(searchParams.get('max_price')) : undefined;
-    const search = searchParams.get('search') || undefined;
+    const search = searchParams.get('search') || searchParams.get('q') || undefined;
 
-    const list = DataService.getProducts({ category, sort, isOrganic, maxPrice, search });
+    const list = DataService.getProducts({ category, subcategory, location, sort, isOrganic, maxPrice, search });
     return {
       data: list,
       status: 200,
